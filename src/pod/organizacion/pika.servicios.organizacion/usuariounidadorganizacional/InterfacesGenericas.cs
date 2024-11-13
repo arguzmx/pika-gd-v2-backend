@@ -1,0 +1,8 @@
+﻿using apigenerica.model.servicios;
+using pika.modelo.organizacion;
+
+namespace pika.servicios.organizacion.usuariounidadorganizacional;
+
+public interface IServicioUsuarioUnidadOrganizacional : IServicioEntidadGenerica<UsuarioUnidadOrganizacional,UsuarioUnidadOrganizacionalInsertar, UsuarioUnidadOrganizacionalActualizar,UsuarioUnidadOrganizacionalDespliegue, string>
+{
+}
