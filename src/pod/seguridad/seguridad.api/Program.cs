@@ -12,6 +12,7 @@ using seguridad.modelo.servicios;
 using seguridad.modelo.servicios.mysql;
 using seguridad.servicios;
 using seguridad.servicios.mysql;
+using System.Reflection;
 namespace seguridad.api
 {
     public class Program
@@ -19,6 +20,12 @@ namespace seguridad.api
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            IWebHostEnvironment environment = builder.Environment;
+            builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
+                .AddEnvironmentVariables();
+
             var configuration = builder.Configuration;
 
             // Add services to the container.

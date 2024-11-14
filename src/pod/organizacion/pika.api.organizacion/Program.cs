@@ -30,6 +30,8 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        IWebHostEnvironment environment = builder.Environment;
+
         builder.CreaConfiguracionStandar(Assembly.GetExecutingAssembly());
         builder.Services.Configure<ConfiguracionAPI>(builder.Configuration.GetSection(nameof(ConfiguracionAPI)));
         builder.CreaConfiguiracionEntidadGenerica();
