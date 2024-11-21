@@ -6,7 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
+
   <ItemGroup>
+    <PackageReference Include="comunes.primitivas" Version="1.0.1" />
     <PackageReference Include="extensibilidad.metadatos" Version="1.0.0" />
   </ItemGroup>
 

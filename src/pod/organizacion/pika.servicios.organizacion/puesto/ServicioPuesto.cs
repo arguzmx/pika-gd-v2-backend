@@ -101,21 +101,6 @@ public class ServicioPuesto : ServicioEntidadGenericaBase<Puesto, PuestoInsertar
         return respuesta;
     }
 
-    public async Task<RespuestaPayload<PaginaGenerica<object>>> PaginaHijoAPI(Consulta consulta, string tipoPadre, string id, StringDictionary? parametros = null)
-    {
-        var temp = await this.PaginaHijo(consulta, tipoPadre, id);
-        RespuestaPayload<PaginaGenerica<object>> respuesta = JsonSerializer.Deserialize<RespuestaPayload<PaginaGenerica<object>>>(JsonSerializer.Serialize(temp));
-        return respuesta;
-    }
-
-    public async Task<RespuestaPayload<PaginaGenerica<object>>> PaginaHijosDespliegueAPI(Consulta consulta, string tipoPadre, string id, StringDictionary? parametros = null)
-    {
-        var temp = await this.PaginaHijosDespliegue(consulta, tipoPadre, id);
-        RespuestaPayload<PaginaGenerica<object>> respuesta = JsonSerializer.Deserialize<RespuestaPayload<PaginaGenerica<object>>>(JsonSerializer.Serialize(temp));
-        return respuesta;
-    }
-
-
     public async Task<RespuestaPayload<object>> UnicaPorIdAPI(object id, StringDictionary? parametros = null)
     {
         var temp = await this.UnicaPorId((string)id);

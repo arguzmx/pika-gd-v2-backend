@@ -7,6 +7,7 @@ using comunes.interservicio.primitivas.seguridad;
 using Microsoft.EntityFrameworkCore;
 using pika.api.organizacion.seguridad;
 using pika.servicios.organizacion.dbcontext;
+using Quartz;
 using Serilog;
 using System.Reflection;
 
@@ -32,6 +33,17 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         IWebHostEnvironment environment = builder.Environment;
 
+
+        builder.Services.AddQuartz(options =>
+        {
+            options.UseMicrosoftDependencyInjectionJobFactory();
+            options.UseSimpleTypeLoader();
+            options.UseInMemoryStore();
+        });
+
+        // Register the Quartz.NET service and configure it to block shutdown until jobs are complete.
+        builder.Services.AddQuartzHostedService(options => options.AwaitApplicationStarted = true);
+
         builder.CreaConfiguracionStandar(Assembly.GetExecutingAssembly());
         builder.Services.Configure<ConfiguracionAPI>(builder.Configuration.GetSection(nameof(ConfiguracionAPI)));
         builder.CreaConfiguiracionEntidadGenerica();
@@ -53,13 +65,11 @@ public class Program
 
         builder.Services.AddSingleton<IProveedorAplicaciones, ConfiguracionSeguridad>();
         builder.Services.AddSingleton<ICacheSeguridad, CacheSeguridad>();
-        builder.Services.AddTransient<IProxySeguridad, ProxySeguridad>();
+        builder.Services.AddSingleton<IProxySeguridad, ProxySeguridad>();
         builder.Services.AddTransient<ICacheAtributos, CacheAtributos>();
+        builder.Services.AddHttpClient();
 
-        builder.Services.AddDistributedMemoryCache();
 
-        // Añadir la extensión para los servicios de API genérica
-        builder.Services.AddServiciosEntidadAPI();
 
         builder.Services.AddAuthentication("Bearer")
         .AddJwtBearer("Bearer", options =>
@@ -82,12 +92,12 @@ public class Program
             });
         });
 
-
+        builder.Services.AddHostedService<Worker>();
         var app = builder.Build();
 
         UpdateDatabase(app);
 
-        // Añadir la extensión para los servicios de API genérica
+        // Aï¿½adir la extensiï¿½n para los servicios de API genï¿½rica
         app.UseEntidadAPI();
 
         // Configure the HTTP request pipeline.

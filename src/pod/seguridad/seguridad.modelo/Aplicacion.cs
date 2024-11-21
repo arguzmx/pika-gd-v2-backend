@@ -11,7 +11,6 @@ namespace seguridad.modelo;
 [EntidadDB]
 public class Aplicacion
 {
-
     /// <summary>
     /// Identificador único de la aplicación, este Id será propoerionado por un sistema externo
     /// </summary>
