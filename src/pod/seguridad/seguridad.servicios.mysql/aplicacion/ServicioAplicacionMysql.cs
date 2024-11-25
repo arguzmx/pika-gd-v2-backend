@@ -133,9 +133,40 @@ public class ServicioAplicacionMysql : ServicioEntidadGenericaBase<Aplicacion, A
 
     public override Aplicacion ADTOFull(Aplicacion actualizacion, Aplicacion actual)
     {
+        foreach( var moduloActualizacion in actualizacion.Modulos)
+        {
+            var moduloEncontrado = actual.Modulos.FirstOrDefault(a => a.ModuloId.Equals(moduloActualizacion.ModuloId));
+            if(moduloEncontrado != null)
+            {
+                foreach(var permisoActualizacion in moduloActualizacion.Permisos)
+                {
+                    var permisoEncontrado = moduloEncontrado.Permisos.FirstOrDefault(b => b.PermisoId.Equals(permisoActualizacion.PermisoId));
+                    if(permisoEncontrado == null)
+                    {
+                        moduloEncontrado.Permisos.Add(permisoActualizacion);
+                    }
+                }
+
+                foreach(var rolActualizacion in moduloActualizacion.RolesPredefinidos)
+                {
+                    var rolEncontrado = moduloEncontrado.RolesPredefinidos.FirstOrDefault(c => c.RolId.Equals(rolActualizacion.RolId));
+                    if(rolEncontrado == null)
+                    {
+                        moduloEncontrado.RolesPredefinidos.Add(rolActualizacion);
+                    }
+                }
+
+                actual.Nombre = actualizacion.Nombre;
+                actual.Descripcion = actualizacion.Descripcion;
+            }
+            else
+            {
+                actual.Modulos.Add(moduloActualizacion);
+            }
+        }
+        
         actual.Nombre = actualizacion.Nombre;
         actual.Descripcion = actualizacion.Descripcion;
-        actual.Modulos = actualizacion.Modulos;
         return actual;
     }
 
@@ -171,7 +202,8 @@ public class ServicioAplicacionMysql : ServicioEntidadGenericaBase<Aplicacion, A
                 return respuesta;
             }
 
-            Aplicacion actual = _dbSetFull.Find(Guid.Parse(id));
+            Aplicacion actual = _dbSetFull.Include(_ => _.Modulos).ThenInclude(_ => _.RolesPredefinidos).
+                Include(_ => _.Modulos).ThenInclude(_ => _.Permisos).FirstOrDefault(_ => _.ApplicacionId.Equals(Guid.Parse(id)));
             if (actual == null)
             {
                 if (id.StartsWith("00000000-0000-0000-0000"))
@@ -183,7 +215,6 @@ public class ServicioAplicacionMysql : ServicioEntidadGenericaBase<Aplicacion, A
                     respuesta.HttpCode = HttpCode.NotFound;
                     return respuesta;
                 }
-
             }
 
             var resultadoValidacion = await ValidarActualizar(id.ToString(), data, actual);
@@ -214,7 +245,6 @@ public class ServicioAplicacionMysql : ServicioEntidadGenericaBase<Aplicacion, A
 
         return respuesta;
     }
-
 
     public override async Task<RespuestaPayload<Aplicacion>> UnicaPorId(string id, StringDictionary? parametros = null)
     {

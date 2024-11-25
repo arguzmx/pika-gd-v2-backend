@@ -3,18 +3,9 @@ using comunes.primitivas.seguridad;
 
 namespace pika.api.organizacion.seguridad;
 
-/// <summary>
-/// Configuración temporal para que la API pueda ejecutarse.
-/// </summary>
+
 public class ConfiguracionSeguridad : IProveedorAplicaciones
 {
-
-    public const string APP_MANAGER_PERM_LIST = "app-manager-perm-list";
-    public const string APP_MANAGER_PERM_ADMIN = "app-manager-perm-admin";
-    public const string APP_MANAGER_ROL_ADMIN = "app-manager-rol-admin";
-
-
-
     public Task<List<Aplicacion>> ObtieneApliaciones()
     {
         List<Aplicacion> apps = [];
@@ -22,56 +13,98 @@ public class ConfiguracionSeguridad : IProveedorAplicaciones
         apps.Add(
             new Aplicacion
             {
-                ApplicacionId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-                Nombre = "Gestor de aplicaciones",
-                Descripcion = "Gestor de aplicaciónes de la solución",
+                ApplicacionId = Guid.Parse(ConfiguracionSeguridadConstantes.AplicacionId),
+                Nombre = "Gestor de Organizaciones",
+                Descripcion = "Gestor de Organizaciones de la solución",
                 Modulos = [
                  new Modulo()
                  {
-                     Nombre = "Administrador de aplicaciones",
-                     Descripcion = "Permite administrar las aplicaciones de la solución",
-                     ModuloId = "app-manager",
+                     Nombre = "Administrador de Organizaciones",
+                     Descripcion = "Permite administrar las Organizaciones de la solución",
+                     ModuloId = "org-manager",
                      RolesPredefinidos = [
                              new()
                              {
                                  Nombre = "Administrador",
-                                 Descripcion = "Todos los permisos para la administración de aplicaciones",
-                                 Permisos = [APP_MANAGER_PERM_ADMIN, APP_MANAGER_PERM_LIST],
+                                 Descripcion = "Todos los permisos para la administración de organizaciones",
+                                 Permisos = [ConfiguracionSeguridadConstantes.ORG_DOMINIO_PERM_ADMIN],
                                  Personalizado = false,
-                                 RolId = APP_MANAGER_ROL_ADMIN
+                                 RolId = ConfiguracionSeguridadConstantes.ORG_DOMINIO_ROL_ADMIN
                              }
 
                          ],
                      Permisos = [
                              new()
                              {
-                                 Nombre = "Administrar aplicaciones",
-                                 Descripcion = "Permite crear, editar y eliminar aplciaciones",
+                                 Nombre = "Administrar Organizaciones",
+                                 Descripcion = "Permite crear, editar y eliminar Organizaciones",
                                  Ambito = AmbitoPermiso.Global,
-                                 PermisoId = APP_MANAGER_PERM_ADMIN
+                                 PermisoId = ConfiguracionSeguridadConstantes.ORG_DOMINIO_PERM_ADMIN
                              },
-                         new()
-                         {
-                             Nombre = "Listar aplicaciones",
-                             Descripcion = "Permite obtener la lista de aplicaciones",
-                             Ambito = AmbitoPermiso.Global,
-                             PermisoId = APP_MANAGER_PERM_LIST
-                         }
+                             new()
+                             {
+                                 Nombre = "Listar dominios",
+                                 Descripcion = "Permite obtener la lista de dominios",
+                                 Ambito = AmbitoPermiso.Global,
+                                 PermisoId = ConfiguracionSeguridadConstantes.ORG_DOMINIO_PERM_LIST
+                             }
                          ]
-                 }
+                 },
+                    new Modulo()
+                    {
+                        Nombre = "Administrador de UnidadesOrganizacionales",
+                        Descripcion = "Permite administrar las UnidadesOrganizacionales de la solución",
+                        ModuloId = "unid-manager",
+                        RolesPredefinidos = [
+                            new()
+                            {
+                                Nombre = "Administrador",
+                                Descripcion = "Todos los permisos para la administración de unidades organizacionales",
+                                Permisos = [ConfiguracionSeguridadConstantes.ORG_UNIDADORGANIZACIONAL_PERM_ADMIN],
+                                Personalizado = false,
+                                RolId = ConfiguracionSeguridadConstantes.ORG_UNIDADORGANIZACIONAL_ROL_ADMIN
+                            }
+
+                        ],
+                        Permisos = [
+                            new()
+                            {
+                                Nombre = "Administrar UnidadesOrganizacionales",
+                                Descripcion = "Permite crear, editar y eliminar UnidadesOrganizacionales",
+                                Ambito = AmbitoPermiso.Global,
+                                PermisoId = ConfiguracionSeguridadConstantes.ORG_UNIDADORGANIZACIONAL_PERM_ADMIN
+                            }
+                        ]
+                    },
+                    new Modulo()
+                    {
+                        Nombre = "Administrador de UsuariosGrupo",
+                        Descripcion = "Permite administrar los UsuariosGrupo de la solución",
+                        ModuloId = "usg-manager",
+                        RolesPredefinidos = [
+                            new()
+                            {
+                                Nombre = "Administrador",
+                                Descripcion = "Todos los permisos para la administración de unidades UsuariosGrupo",
+                                Permisos = [ConfiguracionSeguridadConstantes.ORG_USUARIOGRUPO_PERM_ADMIN],
+                                Personalizado = false,
+                                RolId = ConfiguracionSeguridadConstantes.ORG_usuariogrupo_ROL_ADMIN
+                            }
+
+                        ],
+                        Permisos = [
+                            new()
+                            {
+                                Nombre = "Administrar UsuariosGrupo",
+                                Descripcion = "Permite crear, editar y eliminar UsuariosGrupo",
+                                Ambito = AmbitoPermiso.Global,
+                                PermisoId = ConfiguracionSeguridadConstantes.ORG_USUARIOGRUPO_PERM_ADMIN
+                            }
+                        ]
+                    },
                 ]
+
             });
-
-        apps.Add(
-           new Aplicacion
-           {
-               ApplicacionId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
-               Nombre = "Aplicacion 2 Demo",
-               Descripcion = "Descripcion de la Aplicacion 2  Actualizado",
-               Modulos = new List<Modulo>()
-           });
-
         return Task.FromResult(apps);
     }
 }
-
