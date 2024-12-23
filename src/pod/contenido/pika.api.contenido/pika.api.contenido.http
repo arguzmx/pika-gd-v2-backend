@@ -1,0 +1,6 @@
+@pika.api.contenido_HostAddress = http://localhost:5199
+
+GET {{pika.api.contenido_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
