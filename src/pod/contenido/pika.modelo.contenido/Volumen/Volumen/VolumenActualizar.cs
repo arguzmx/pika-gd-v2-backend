@@ -2,7 +2,6 @@
 
 public class VolumenActualizar
 {
-    public string Id { get; set; }
     public string Nombre { get; set; }
     public string TipoGestorESId { get; set; }
     public long TamanoMaximo { get; set; }

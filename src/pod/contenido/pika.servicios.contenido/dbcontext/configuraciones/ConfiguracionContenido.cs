@@ -29,7 +29,7 @@ public class ConfiguracionContenido : IEntityTypeConfiguration<Contenido>
         builder.Property(e => e.PermisoId).IsRequired(false).HasMaxLength(128);
 
         //builder.HasOne(x => x.Volumen).WithMany(y => y.Contenido).HasForeignKey(x => x.VolumenId).OnDelete(DeleteBehavior.Cascade);
-        //builder.HasOne(x => x.Repositorio).WithMany(y => y.Contenido).HasForeignKey(x => x.RepositorioId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(x => x.Repositorio).WithMany(y => y.Contenido).HasForeignKey(x => x.RepositorioId).OnDelete(DeleteBehavior.Cascade);
         builder.HasOne(x => x.Carpeta).WithMany(y => y.Contenido).HasForeignKey(x => x.CarpetaId).OnDelete(DeleteBehavior.Cascade);
 
     }

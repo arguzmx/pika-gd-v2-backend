@@ -22,6 +22,6 @@ public class ConfiguracionCarpeta : IEntityTypeConfiguration<Carpeta>
         builder.Property(e => e.EsRaiz);
         builder.Property(e => e.PermisoId).HasMaxLength(128);
 
-        //builder.HasOne(x => x.Repositorio).WithMany(y => y.Carpetas).HasForeignKey(x => x.RepositorioId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(x => x.Repositorio).WithMany(y => y.Carpetas).HasForeignKey(x => x.RepositorioId).OnDelete(DeleteBehavior.Cascade);
     }
 }

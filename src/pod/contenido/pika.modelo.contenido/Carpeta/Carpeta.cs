@@ -79,12 +79,12 @@ public class Carpeta
     //[XmlIgnore, JsonIgnore]
     //public Permiso? Permiso { get; set; }
 
-    ///// <summary>
-    ///// Popieadd de navegacion para RepositorioId
-    ///// </summary>
-    //[XmlIgnore]
-    //[JsonIgnore]
-    //public Repositorio Repositorio { get; set; }
+    /// <summary>
+    /// Popieadd de navegacion para RepositorioId
+    /// </summary>
+    [XmlIgnore]
+    [JsonIgnore]
+    public Repositorio Repositorio { get; set; }
 
     /// <summary>
     /// Contenidos asociados a la carpeta

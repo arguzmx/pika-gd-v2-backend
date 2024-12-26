@@ -2,6 +2,7 @@
 
 namespace pika.modelo.contenido;
 
+
 public class TraduccionesTipoGestorES : I18NCatalogo
 {
 }

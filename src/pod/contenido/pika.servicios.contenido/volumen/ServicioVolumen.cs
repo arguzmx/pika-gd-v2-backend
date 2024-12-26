@@ -13,20 +13,22 @@ using pika.servicios.contenido.dbcontext;
 using System.Collections.Specialized;
 using System.Text.Json;
 
-namespace pika.servicios.contenido;
+namespace pika.servicios.contenido.volumen;
 
 
-[ServicioEntidadAPI(entidad: typeof(Contenido))]
-public class ServicioContenido : ServicioEntidadGenericaBase<Contenido, ContenidoInsertar, ContenidoActualizar, ContenidoDespliegue, string>,
-    IServicioEntidadAPI, IServicioContenido
+[ServicioEntidadAPI(entidad: typeof(Volumen))]
+public class ServicioVolumen : ServicioEntidadGenericaBase<Volumen, VolumenInsertar, VolumenActualizar, VolumenDespliegue, string>,
+    IServicioEntidadAPI, IServicioVolumen
 {
+
     private DbContextContenido localContext;
 
-    public ServicioContenido(DbContextContenido context, ILogger<ServicioContenido> logger, IReflectorEntidadesAPI Reflector, IDistributedCache cache) : base(context, context.Contenidos, logger, Reflector, cache)
+    public ServicioVolumen(DbContextContenido context, ILogger<ServicioVolumen> logger, IReflectorEntidadesAPI Reflector, IDistributedCache cache) : base(context, context.Volumenes, logger, Reflector, cache)
     {
         interpreteConsulta = new InterpreteConsultaMySQL();
         localContext = context;
     }
+
 
     /// <summary>
     /// Acceso al repositorio de gestipon documental local
@@ -35,11 +37,9 @@ public class ServicioContenido : ServicioEntidadGenericaBase<Contenido, Contenid
 
     public bool RequiereAutenticacion => true;
 
-
-
     public async Task<Respuesta> ActualizarAPI(object id, JsonElement data, StringDictionary? parametros = null)
     {
-        var update = data.Deserialize<ContenidoActualizar>(JsonAPIDefaults());
+        var update = data.Deserialize<VolumenActualizar>(JsonAPIDefaults());
         return await this.Actualizar((string)id, update, parametros);
     }
 
@@ -80,7 +80,7 @@ public class ServicioContenido : ServicioEntidadGenericaBase<Contenido, Contenid
 
     public async Task<RespuestaPayload<object>> InsertarAPI(JsonElement data, StringDictionary? parametros = null)
     {
-        var add = data.Deserialize<ContenidoInsertar>(JsonAPIDefaults());
+        var add = data.Deserialize<VolumenInsertar>(JsonAPIDefaults());
         var temp = await this.Insertar(add, parametros);
         RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
         return respuesta;
@@ -116,12 +116,14 @@ public class ServicioContenido : ServicioEntidadGenericaBase<Contenido, Contenid
         return respuesta;
     }
 
-    #region Overrides para la personalización de la entidad Repositorio
+    #region Overrides para la personalización de la entidad Volumen
 
-    public override async Task<ResultadoValidacion> ValidarInsertar(ContenidoInsertar data)
+    public override async Task<ResultadoValidacion> ValidarInsertar(VolumenInsertar data)
     {
         ResultadoValidacion resultado = new();
-        bool encontrado = await DB.Contenidos.AnyAsync(a => a.Nombre == data.Nombre);
+        bool encontrado = await DB.Volumenes.AnyAsync(a => a.UOrgId == _contextoUsuario!.UOrgId
+                && a.DominioId == _contextoUsuario.DominioId
+        && a.Nombre == data.Nombre);
 
         if (encontrado)
         {
@@ -136,10 +138,12 @@ public class ServicioContenido : ServicioEntidadGenericaBase<Contenido, Contenid
     }
 
 
-    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, Contenido original)
+    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, Volumen original)
     {
         ResultadoValidacion resultado = new();
-        bool encontrado = await DB.Contenidos.AnyAsync(a => a.Id == id);
+        bool encontrado = await DB.Volumenes.AnyAsync(a => a.UOrgId == _contextoUsuario!.UOrgId
+                && a.DominioId == _contextoUsuario.DominioId
+                && a.Id == id);
 
         if (!encontrado)
         {
@@ -149,76 +153,92 @@ public class ServicioContenido : ServicioEntidadGenericaBase<Contenido, Contenid
         }
         else
         {
-            resultado.Valido = true;
+            bool EncontradoRepositorio = await DB.Repositorios.AnyAsync(a => a.VolumenId == id);
+            bool EncontradoContenido = await DB.Contenidos.AnyAsync(a => a.VolumenId == id);
+            if (EncontradoRepositorio || EncontradoContenido)
+            {
+                resultado.Error = "Id en uso verifique que este no se encuentre en Repositorio O Contenido".Error409();
+            }
+            else
+            {
+                resultado.Valido = true;
+            }
         }
 
         return resultado;
     }
 
 
-    public override async Task<ResultadoValidacion> ValidarActualizar(string id, ContenidoActualizar actualizacion, Contenido original)
+    public override async Task<ResultadoValidacion> ValidarActualizar(string id, VolumenActualizar actualizacion, Volumen original)
     {
         ResultadoValidacion resultado = new();
+        bool encontrado = await DB.Volumenes.AnyAsync(a => a.UOrgId == _contextoUsuario!.UOrgId
+                && a.DominioId == _contextoUsuario.DominioId
+                && a.Id == id);
 
-        bool duplicado = await DB.Contenidos.AnyAsync(a => a.Id != id && a.Nombre.Equals(actualizacion.Nombre));
-
-        if (duplicado)
+        if (!encontrado)
         {
-            resultado.Error = "Nombre".ErrorProcesoDuplicado();
+            resultado.Error = "id".ErrorProcesoNoEncontrado();
 
         }
         else
         {
-            resultado.Valido = true;
-        }
+            // Verifica que no haya un registro con el mismo nombre para el mismo dominio y UO en un resgitrso diferente
+            bool duplicado = await DB.Volumenes.AnyAsync(a => a.UOrgId == _contextoUsuario!.UOrgId
+                && a.DominioId == _contextoUsuario.DominioId
+                && a.Id != id
+                && a.Nombre.Equals(actualizacion.Nombre));
 
+            if (duplicado)
+            {
+                resultado.Error = "Nombre".ErrorProcesoDuplicado();
+
+            }
+            else
+            {
+                resultado.Valido = true;
+            }
+        }
 
         return resultado;
     }
 
 
-    public override Contenido ADTOFull(ContenidoActualizar actualizacion, Contenido actual)
+    public override Volumen ADTOFull(VolumenActualizar actualizacion, Volumen actual)
     {
         actual.Nombre = actualizacion.Nombre;
-        actual.IdExterno = actualizacion.IdExterno;
+        actual.TipoGestorESId = actualizacion.TipoGestorESId;
+        actual.TamanoMaximo = actualizacion.TamanoMaximo;
+        actual.Activo = actualizacion.Activo;
+        actual.EscrituraHabilitada = actualizacion.EscrituraHabilitada;
         return actual;
     }
 
-    public override Contenido ADTOFull(ContenidoInsertar data)
+    public override Volumen ADTOFull(VolumenInsertar data)
     {
-        Contenido contenido = new()
+        Volumen volumen = new()
         {
             Id = Guid.NewGuid().ToString(),
+            UOrgId = _contextoUsuario!.UOrgId!,
+            DominioId = _contextoUsuario!.DominioId!,
             Nombre = data.Nombre,
-            RepositorioId = data.RepositorioId,
-            CreadorId = "seobtienedejwt",
-            FechaCreacion = DateTime.Now,
-            VolumenId = data.VolumenId,
-            CarpetaId = data.CarpetaId,
-            TipoElemento = data.TipoElemento,
-            IdExterno = data.IdExterno,
-            PermisoId = "permiso09585854",
-
+            TipoGestorESId = data.TipoGestorESId,
+            TamanoMaximo = data.TamanoMaximo,
+            Activo = data.Activo,
+            EscrituraHabilitada = data.EscrituraHabilitada
         };
-        return contenido;
+        return volumen;
     }
 
-    public override ContenidoDespliegue ADTODespliegue(Contenido data)
+    public override VolumenDespliegue ADTODespliegue(Volumen data)
     {
-        ContenidoDespliegue contenidoDespliegue = new()
+        VolumenDespliegue volumenDespliegue = new()
         {
             Id = data.Id,
-            Nombre = data.Nombre,
-            CreadorId = data.CreadorId,
-            FechaCreacion = data.FechaCreacion,
-            ConteoAnexos = data.ConteoAnexos,
-            TamanoBytes = data.TamanoBytes,
-            VolumenId = data.VolumenId,
-            CarpetaId = data.CarpetaId,
-            TipoElemento = data.TipoElemento,
-            IdExterno = data.IdExterno
+            Nombre = data.Nombre
         };
-        return contenidoDespliegue;
+        return volumenDespliegue;
     }
+
     #endregion
 }
