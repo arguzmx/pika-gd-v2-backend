@@ -31,6 +31,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "seguridad.servicios", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "seguridad.servicios.mysql", "src\pod\seguridad\seguridad.servicios.mysql\seguridad.servicios.mysql.csproj", "{639E4D0B-5393-41B5-B797-999C552E0193}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gestiondocumental", "gestiondocumental", "{61EC243E-E9F9-4024-BD43-8C8A18C292B1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pika.api.gestiondocumental", "src\pod\gestiondocumental\pika.api.gestiondocumental\pika.api.gestiondocumental.csproj", "{FA35C22F-1CBD-4484-8E6B-A781F1B97AF7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pika.modelo.gestiondocumental", "src\pod\gestiondocumental\pika.modelo.gestiondocumental\pika.modelo.gestiondocumental.csproj", "{28967BCB-B926-49D9-89D3-E01A7CBBC043}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pika.servicios.gestiondocumental", "src\pod\gestiondocumental\pika.servicios.gestiondocumental\pika.servicios.gestiondocumental.csproj", "{5005C89D-CDF9-45A3-BB8C-A1CA1EA652AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +81,18 @@ Global
 		{639E4D0B-5393-41B5-B797-999C552E0193}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{639E4D0B-5393-41B5-B797-999C552E0193}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{639E4D0B-5393-41B5-B797-999C552E0193}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA35C22F-1CBD-4484-8E6B-A781F1B97AF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA35C22F-1CBD-4484-8E6B-A781F1B97AF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA35C22F-1CBD-4484-8E6B-A781F1B97AF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA35C22F-1CBD-4484-8E6B-A781F1B97AF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28967BCB-B926-49D9-89D3-E01A7CBBC043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28967BCB-B926-49D9-89D3-E01A7CBBC043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28967BCB-B926-49D9-89D3-E01A7CBBC043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28967BCB-B926-49D9-89D3-E01A7CBBC043}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5005C89D-CDF9-45A3-BB8C-A1CA1EA652AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5005C89D-CDF9-45A3-BB8C-A1CA1EA652AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5005C89D-CDF9-45A3-BB8C-A1CA1EA652AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5005C89D-CDF9-45A3-BB8C-A1CA1EA652AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +110,10 @@ Global
 		{5D4A07E7-BF4E-43CE-8F69-DF831F4C7AE7} = {67C17A30-DEF8-4525-8E30-BAE35111C110}
 		{99736328-EF2B-4564-8FEC-B2827DDCAD70} = {67C17A30-DEF8-4525-8E30-BAE35111C110}
 		{639E4D0B-5393-41B5-B797-999C552E0193} = {67C17A30-DEF8-4525-8E30-BAE35111C110}
+		{61EC243E-E9F9-4024-BD43-8C8A18C292B1} = {7E1B19B4-77C9-4666-9B9F-1FF8E455C785}
+		{FA35C22F-1CBD-4484-8E6B-A781F1B97AF7} = {61EC243E-E9F9-4024-BD43-8C8A18C292B1}
+		{28967BCB-B926-49D9-89D3-E01A7CBBC043} = {61EC243E-E9F9-4024-BD43-8C8A18C292B1}
+		{5005C89D-CDF9-45A3-BB8C-A1CA1EA652AA} = {61EC243E-E9F9-4024-BD43-8C8A18C292B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {53F73A1B-FB3A-4382-B29E-EF7B89CF3904}
