@@ -1,5 +1,4 @@
-﻿using apigenerica.model.abstracciones;
-using apigenerica.model.interpretes;
+﻿using apigenerica.model.interpretes;
 using apigenerica.model.modelos;
 using apigenerica.model.reflectores;
 using apigenerica.model.servicios;
@@ -10,6 +9,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using pika.modelo.contenido;
 using pika.servicios.contenido.dbcontext;
+using pika.servicios.contenido.Extensiones;
 using System.Collections.Specialized;
 using System.Text.Json;
 
@@ -43,9 +43,9 @@ public class ServicioVolumen : ServicioEntidadGenericaBase<Volumen, VolumenInser
         return await this.Actualizar((string)id, update, parametros);
     }
 
-    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null)
+    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null, bool forzarEliminacion = false)
     {
-        return await this.Eliminar((string)id, parametros);
+        return await this.Eliminar((string)id, parametros, forzarEliminacion);
     }
 
     public Entidad EntidadDespliegueAPI()
@@ -122,8 +122,8 @@ public class ServicioVolumen : ServicioEntidadGenericaBase<Volumen, VolumenInser
     {
         ResultadoValidacion resultado = new();
         bool encontrado = await DB.Volumenes.AnyAsync(a => a.UOrgId == _contextoUsuario!.UOrgId
-                && a.DominioId == _contextoUsuario.DominioId
-        && a.Nombre == data.Nombre);
+                && a.DominioId == _contextoUsuario.DominioId 
+                && a.Nombre.Equals( data.Nombre, StringComparison.InvariantCultureIgnoreCase));
 
         if (encontrado)
         {
@@ -138,7 +138,7 @@ public class ServicioVolumen : ServicioEntidadGenericaBase<Volumen, VolumenInser
     }
 
 
-    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, Volumen original)
+    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, Volumen original, bool forzarEliminacion = false)
     {
         ResultadoValidacion resultado = new();
         bool encontrado = await DB.Volumenes.AnyAsync(a => a.UOrgId == _contextoUsuario!.UOrgId
@@ -157,7 +157,7 @@ public class ServicioVolumen : ServicioEntidadGenericaBase<Volumen, VolumenInser
             bool EncontradoContenido = await DB.Contenidos.AnyAsync(a => a.VolumenId == id);
             if (EncontradoRepositorio || EncontradoContenido)
             {
-                resultado.Error = "Id en uso verifique que este no se encuentre en Repositorio O Contenido".Error409();
+                resultado.Error = "Id".ErrorConflict("El volumen se encuentra en uso");
             }
             else
             {

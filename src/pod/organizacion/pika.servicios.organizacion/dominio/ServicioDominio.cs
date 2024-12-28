@@ -45,9 +45,9 @@ public class ServicioDominio : ServicioEntidadGenericaBase<Dominio, DominioInser
         return await this.Actualizar((string)id, update, parametros);
     }
 
-    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null)
+    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null, bool forzarEliminacion = false)
     {
-        return await this.Eliminar((string)id, parametros);
+        return await this.Eliminar((string)id, parametros, forzarEliminacion);
     }
 
     public Entidad EntidadDespliegueAPI()
@@ -142,7 +142,7 @@ public class ServicioDominio : ServicioEntidadGenericaBase<Dominio, DominioInser
     }
 
 
-    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, Dominio original)
+    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, Dominio original, bool forzarEliminacion = false)
     {
         ResultadoValidacion resultado = new();
         bool encontrado = await DB.Dominios.AnyAsync(a => a.Id==id);

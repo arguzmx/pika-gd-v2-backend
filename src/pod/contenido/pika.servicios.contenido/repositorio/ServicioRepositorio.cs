@@ -42,9 +42,9 @@ public class ServicioRepositorio : ServicioEntidadGenericaBase<Repositorio, Repo
         return await this.Actualizar((string)id, update, parametros);
     }
 
-    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null)
+    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null, bool forzarEliminacion = false)
     {
-        return await this.Eliminar((string)id, parametros);
+        return await this.Eliminar((string)id, parametros, forzarEliminacion);
     }
 
     public Entidad EntidadDespliegueAPI()
@@ -216,7 +216,7 @@ public class ServicioRepositorio : ServicioEntidadGenericaBase<Repositorio, Repo
     }
 
 
-    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, Repositorio original)
+    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, Repositorio original, bool forzarEliminacion = false)
     {
         ResultadoValidacion resultado = new();
         bool encontrado = await DB.Repositorios.AnyAsync(a => a.UOrgId == _contextoUsuario!.UOrgId

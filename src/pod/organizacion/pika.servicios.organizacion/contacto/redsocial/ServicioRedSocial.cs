@@ -51,9 +51,9 @@ namespace pika.servicios.organizacion.contacto.redsocial
             return await this.Actualizar((string)id, update);
         }
 
-        public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null)
+        public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null, bool forzarEliminacion = false)
         {
-            return await this.Eliminar((string)id);
+            return await this.Eliminar((string)id, parametros, forzarEliminacion);
         }
 
         public Entidad EntidadDespliegueAPI()
@@ -142,7 +142,7 @@ namespace pika.servicios.organizacion.contacto.redsocial
         }
 
 
-        public override async Task<ResultadoValidacion> ValidarEliminacion(string id, RedSocial original)
+        public override async Task<ResultadoValidacion> ValidarEliminacion(string id, RedSocial original, bool forzarEliminacion = false)
         {
             ResultadoValidacion resultado = new();
             bool encontrado = await DB.RedesSociales.AnyAsync(a => a.Id == id && a.UOrgId == _contextoUsuario!.UOrgId && a.DominioId == _contextoUsuario.DominioId);

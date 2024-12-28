@@ -1,0 +1,28 @@
+﻿Un dominio utiliza un controlaodr N1 para su CRUD
+
+La propiedad UsuarioId se llena desde el JWT y se inyecta al servicio vía 
+
+ContextoUsuario.UsuarioId
+
+Reglas del CRUD
+
+Verificacion propiedad en PUT DELETE y GET
+Antes de obtener, eliminar o actualziar un dominio debe verificarse que el UsuarioId
+del dominio sea idéntico al de ContextoUsuario.UsuarioId y debe
+devolverse 403 si no coinciden
+
+POST	un mismo usuarioId no puede tener dos dominios con el mismo nombre 
+		la API debe devolver 409 si se intenta añadir un dominio homónimo
+
+PUT		debe verificarse que el nombre del dominio no exista con otro Id 
+		antes de salvar la información, si existe debe devolverser 400 
+
+DELETE	El dominio no puede eliminarse si tiene unidades organizacionales dependiente
+		debe devolverse 409 en este caso
+
+GET		En la operaciones de busqueda, paginado incluyendo el UnicoporId
+PAGE	debe añadirse al query una condición de igualda para solo obenter
+		los registros con UsuarioId  = ContextoUsuario.UsuarioId 
+
+
+

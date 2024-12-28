@@ -43,9 +43,9 @@ public class ServicioDireccionPostal : ServicioEntidadGenericaBase<DireccionPost
         return await this.Actualizar((string)id, update);
     }
 
-    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null)
+    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null, bool forzarEliminacion = false)
     {
-        return await this.Eliminar((string)id);
+        return await this.Eliminar((string)id, parametros, forzarEliminacion);
     }
 
     public Entidad EntidadDespliegueAPI()
@@ -134,7 +134,7 @@ public class ServicioDireccionPostal : ServicioEntidadGenericaBase<DireccionPost
     }
 
 
-    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, DireccionPostal original)
+    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, DireccionPostal original, bool forzarEliminacion = false)
     {
         ResultadoValidacion resultado = new();
         bool encontrado = await DB.DireccionesPostales.AnyAsync(a => a.Id == id && a.UOrgId == _contextoUsuario!.UOrgId && a.DominioId == _contextoUsuario.DominioId);

@@ -1,5 +1,4 @@
-﻿using apigenerica.model.abstracciones;
-using apigenerica.model.interpretes;
+﻿using apigenerica.model.interpretes;
 using apigenerica.model.modelos;
 using apigenerica.model.reflectores;
 using apigenerica.model.servicios;
@@ -10,6 +9,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using pika.modelo.contenido;
 using pika.servicios.contenido.dbcontext;
+using pika.servicios.contenido.Extensiones;
 using System.Collections.Specialized;
 using System.Text.Json;
 
@@ -38,15 +38,31 @@ public class ServicioCarpeta : ServicioEntidadGenericaBase<Carpeta, CarpetaInser
 
     public bool RequiereAutenticacion => true;
 
+    private const string REPOID = "n0Id";
+    private string Valor(StringDictionary? parametros, string clave)
+    {
+        string valor = null;
+        if (parametros != null) {
+
+            if (parametros.ContainsKey(clave)) { valor = parametros[clave]; } 
+        }
+        return valor;
+    }
+
+    private string RepositorioId;
+
+
     public async Task<Respuesta> ActualizarAPI(object id, JsonElement data, StringDictionary? parametros = null)
     {
+        RepositorioId = Valor(parametros, REPOID);
         var update = data.Deserialize<CarpetaActualizar>(JsonAPIDefaults());
         return await this.Actualizar((string)id, update, parametros);
     }
 
-    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null)
+    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null, bool forzarEliminacion = false)
     {
-        return await this.Eliminar((string)id, parametros);
+        RepositorioId = Valor(parametros, REPOID);
+        return await this.Eliminar((string)id, parametros, forzarEliminacion);
     }
 
     public Entidad EntidadDespliegueAPI()
@@ -81,7 +97,9 @@ public class ServicioCarpeta : ServicioEntidadGenericaBase<Carpeta, CarpetaInser
 
     public async Task<RespuestaPayload<object>> InsertarAPI(JsonElement data, StringDictionary? parametros = null)
     {
+        RepositorioId = Valor(parametros, REPOID);
         var add = data.Deserialize<CarpetaInsertar>(JsonAPIDefaults());
+        add!.RepositorioId = RepositorioId;
         var temp = await this.Insertar(add, parametros);
         RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
         return respuesta;
@@ -89,6 +107,7 @@ public class ServicioCarpeta : ServicioEntidadGenericaBase<Carpeta, CarpetaInser
 
     public async Task<RespuestaPayload<PaginaGenerica<object>>> PaginaAPI(Consulta consulta, StringDictionary? parametros = null)
     {
+        RepositorioId = Valor(parametros, REPOID);
         var temp = await this.Pagina(consulta, parametros);
         RespuestaPayload<PaginaGenerica<object>> respuesta = JsonSerializer.Deserialize<RespuestaPayload<PaginaGenerica<object>>>(JsonSerializer.Serialize(temp));
         return respuesta;
@@ -96,6 +115,7 @@ public class ServicioCarpeta : ServicioEntidadGenericaBase<Carpeta, CarpetaInser
 
     public async Task<RespuestaPayload<PaginaGenerica<object>>> PaginaDespliegueAPI(Consulta consulta, StringDictionary? parametros = null)
     {
+        RepositorioId = Valor(parametros, REPOID);
         var temp = await this.PaginaDespliegue(consulta, parametros);
         RespuestaPayload<PaginaGenerica<object>> respuesta = JsonSerializer.Deserialize<RespuestaPayload<PaginaGenerica<object>>>(JsonSerializer.Serialize(temp));
         return respuesta;
@@ -103,6 +123,7 @@ public class ServicioCarpeta : ServicioEntidadGenericaBase<Carpeta, CarpetaInser
 
     public async Task<RespuestaPayload<object>> UnicaPorIdAPI(object id, StringDictionary? parametros = null)
     {
+        RepositorioId = Valor(parametros, REPOID);
         var temp = await this.UnicaPorId((string)id, parametros);
         RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
         return respuesta;
@@ -110,80 +131,62 @@ public class ServicioCarpeta : ServicioEntidadGenericaBase<Carpeta, CarpetaInser
 
     public async Task<RespuestaPayload<object>> UnicaPorIdDespliegueAPI(object id, StringDictionary? parametros = null)
     {
+        RepositorioId = Valor(parametros, REPOID);
         var temp = await this.UnicaPorIdDespliegue((string)id, parametros);
 
         RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
         return respuesta;
     }
 
-    #region Overrides para la personalización de la entidad Carpeta
-
-    public override async Task<ResultadoValidacion> ValidarInsertar(CarpetaInsertar data)
+    public override async Task<RespuestaPayload<List<NodoArbol<object>>>> Arbol(string? raizId = null, bool parcial = true, bool incluirPayload = false, StringDictionary? parametros = null)
     {
-        ResultadoValidacion resultado = new();
-        bool encontrado = await DB.Carpetas.AnyAsync(a => a.Nombre == data.Nombre);
-
-        if (encontrado)
+        RepositorioId = Valor(parametros, REPOID);
+        RespuestaPayload<List<NodoArbol<object>>> respuesta = new ();
+        var carpetas = ArbolRecursivo(raizId, parcial, incluirPayload, RepositorioId);
+        List<NodoArbol<object>> nodos = [];
+        foreach (var c in carpetas)
         {
-            resultado.Error = "Nombre".ErrorProcesoDuplicado();
+            NodoArbol<object> nodo = new() { Id = c.Id, PadreId = c.CarpetaPadreId, Texto = c.Nombre };
+            if(incluirPayload)
+            {
+                nodo.Payload = c;
+            }
+            nodos.Add(nodo);
         }
-        else
+        respuesta.Payload = nodos;  
+        respuesta.Ok = true;
+        return respuesta;
+    }
+
+    private List<Carpeta> ArbolRecursivo(string? padreId , bool parcial, bool incluirPayload, string repositorioId)
+    {
+        List<Carpeta> carpetas = [];
+        if(string.IsNullOrEmpty(padreId))
         {
-            resultado.Valido = true;
+            carpetas = DB.Carpetas.Where(c=>c.EsRaiz == true && c.RepositorioId == repositorioId).ToList();  
+
+        } else
+        {
+            carpetas = DB.Carpetas.Where(c => c.CarpetaPadreId == padreId && c.RepositorioId == repositorioId).ToList();
         }
 
-        return resultado;
+        if (carpetas.Count > 0) { 
+        
+            if(!parcial)
+            {
+                foreach (var c in carpetas) { 
+                    var tmp = ArbolRecursivo(c.Id, parcial, incluirPayload, repositorioId);
+                    if (tmp.Count > 0) {
+                        carpetas.AddRange(tmp);
+                    }
+                }
+            }
+        }
+        return carpetas;
     }
 
 
-    //public override async Task<ResultadoValidacion> ValidarEliminacion(string id, Carpeta original)
-    //{
-    //    ResultadoValidacion resultado = new();
-    //    bool encontrado = await DB.Carpetas.AnyAsync(a => a.Id == id);
-
-    //    if (!encontrado)
-    //    {
-
-    //        resultado.Error = "id".ErrorProcesoNoEncontrado();
-
-    //    }
-    //    else
-    //    {
-    //        bool EncontradoContenido = await DB.Contenidos.AnyAsync(a => a.CarpetaId == id);
-    //        if (EncontradoContenido)
-    //        {
-    //            resultado.Error = "Id en uso verifique que este no este en Contenido".Error409();
-    //        }
-    //        else
-    //        {
-    //            resultado.Valido = true;
-    //        }
-    //    }
-
-    //    return resultado;
-    //}
-
-
-    public override async Task<ResultadoValidacion> ValidarActualizar(string id, CarpetaActualizar actualizacion, Carpeta original)
-    {
-        ResultadoValidacion resultado = new();
-
-        bool duplicado = await DB.Carpetas.AnyAsync(a => a.Id != id && a.Nombre.Equals(actualizacion.Nombre));
-
-        if (duplicado)
-        {
-            resultado.Error = "Nombre".ErrorProcesoDuplicado();
-
-        }
-        else
-        {
-            resultado.Valido = true;
-        }
-
-
-        return resultado;
-    }
-
+    #region Overrides para la personalización de la entidad Carpeta y validaciones
 
     public override Carpeta ADTOFull(CarpetaActualizar actualizacion, Carpeta actual)
     {
@@ -197,14 +200,13 @@ public class ServicioCarpeta : ServicioEntidadGenericaBase<Carpeta, CarpetaInser
         Carpeta carpeta = new()
         {
             Id = Guid.NewGuid().ToString(),
-            RepositorioId = data.RepositorioId,
+            RepositorioId = RepositorioId,
             CreadorId = _contextoUsuario!.UsuarioId!,
             FechaCreacion = DateTime.Now,
             Nombre = data.Nombre,
             CarpetaPadreId = data.CarpetaPadreId,
             EsRaiz = data.CarpetaPadreId == null,
-            PermisoId = "OperacionEspecial"
-
+            PermisoId = null
         };
         return carpeta;
     }
@@ -221,6 +223,116 @@ public class ServicioCarpeta : ServicioEntidadGenericaBase<Carpeta, CarpetaInser
         };
         return carpetaDespliegue;
     }
+
+
+    public override async Task<ResultadoValidacion> ValidarInsertar(CarpetaInsertar data)
+    {
+        ErrorProceso error = null;
+
+        if (data.RepositorioId == null)
+        {
+            error = "RepositorioId".ErrorBadRequest("No pude ser nulo");
+        }
+        else
+        {
+            bool repoValido = await RepositorioValido(RepositorioId);
+            if (repoValido)
+            {
+
+                bool duplicado = await CarpetaDuplicada(data.Nombre, data.CarpetaPadreId, null, RepositorioId, false);
+                if (duplicado)
+                {
+                    error = "Nombre".ErrorProcesoDuplicado();
+                }
+            }
+            else
+            {
+                error = "RepositorioId".ErrorBadRequest("Repositorio inexistente");
+            }
+        }
+        return new ResultadoValidacion() { Valido = error == null, Error = error };
+    }
+
+
+    public override async Task<ResultadoValidacion> ValidarActualizar(string id, CarpetaActualizar actualizacion, Carpeta original)
+    {
+        ResultadoValidacion resultado = new();
+        ErrorProceso error = null;
+
+        bool repoValido = await RepositorioValido(RepositorioId);
+        if (repoValido)
+        {
+            bool duplicado = await CarpetaDuplicada(actualizacion.Nombre, actualizacion.CarpetaPadreId, original.Id, RepositorioId, true);
+            if (duplicado)
+            {
+                error = "Nombre".ErrorProcesoDuplicado();
+            }
+        }
+        else
+        {
+            error = "RepositorioId".ErrorBadRequest("Repositorio inexistente");
+        }
+        return new ResultadoValidacion() { Valido = error == null, Error = error };
+    }
+
+    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, Carpeta original, bool forzarEliminacion = false)
+    {
+        ErrorProceso error = null;
+        var carpeta = await this.DB.Carpetas.FirstOrDefaultAsync(c => c.RepositorioId == RepositorioId && c.Id == id);
+        if (carpeta != null)
+        {
+            if (!forzarEliminacion)
+            {
+                var hijos = DB.Carpetas.Any(c => c.CarpetaPadreId == id) || DB.Contenidos.Any(c => c.CarpetaId == id);
+                if (hijos)
+                {
+                    error = "Id".ErrorConflict("carpeta no vacía");
+                }
+            }
+        }
+        else
+        {
+            error = "Id".ErrorNotFound("carpeta inexistente");
+        }
+        return new ResultadoValidacion() { Valido = error == null, Error = error };
+    }
+
+    private async Task<bool> RepositorioValido(string repositorioId)
+    {
+        return await this.DB.Repositorios.AnyAsync(r => r.Id == repositorioId);
+    }
+
+    private async Task<bool> CarpetaDuplicada(string nombre, string? padreId, string? carpetaId, string repositorioId, bool update)
+    {
+        Carpeta carpeta;
+        if (update)
+        {
+            if (string.IsNullOrEmpty(padreId))
+            {
+                carpeta = await this.DB.Carpetas.FirstOrDefaultAsync(c => c.RepositorioId == repositorioId
+                && c.Id != carpetaId && c.Nombre.Equals(nombre, StringComparison.InvariantCultureIgnoreCase) && c.EsRaiz == true);
+            }
+            else
+            {
+                carpeta = await this.DB.Carpetas.FirstOrDefaultAsync(c => c.RepositorioId == repositorioId
+                && c.Id != carpetaId && c.Nombre.Equals(nombre, StringComparison.InvariantCultureIgnoreCase) && c.CarpetaPadreId == padreId);
+            }
+        }
+        else
+        {
+            if (string.IsNullOrEmpty(padreId))
+            {
+                carpeta = await this.DB.Carpetas.FirstOrDefaultAsync(c => c.RepositorioId == repositorioId && c.Nombre.Equals(nombre, StringComparison.InvariantCultureIgnoreCase) && c.EsRaiz == true);
+            }
+            else
+            {
+                carpeta = await this.DB.Carpetas.FirstOrDefaultAsync(c => c.RepositorioId == repositorioId && c.Nombre.Equals(nombre, StringComparison.InvariantCultureIgnoreCase) && c.CarpetaPadreId == padreId);
+            }
+        }
+
+        return carpeta != null;
+    }
+
     #endregion
 
 }
