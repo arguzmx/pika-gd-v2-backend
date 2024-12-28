@@ -38,6 +38,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pika.servicios.contenido", "src\pod\contenido\pika.servicios.contenido\pika.servicios.contenido.csproj", "{87F118E7-D638-46E1-939B-B1C0DFA69E10}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pika.api.contenido", "src\pod\contenido\pika.api.contenido\pika.api.contenido.csproj", "{EFAB48DF-C53A-4ECC-B753-8461A3BD679D}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gestiondocumental", "gestiondocumental", "{61EC243E-E9F9-4024-BD43-8C8A18C292B1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pika.api.gestiondocumental", "src\pod\gestiondocumental\pika.api.gestiondocumental\pika.api.gestiondocumental.csproj", "{FA35C22F-1CBD-4484-8E6B-A781F1B97AF7}"
