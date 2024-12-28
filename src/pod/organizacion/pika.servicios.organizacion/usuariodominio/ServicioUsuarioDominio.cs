@@ -41,9 +41,9 @@ public class ServicioUsuarioDominio : ServicioEntidadGenericaBase<UsuarioDominio
         throw new NotImplementedException(); 
     }
 
-    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null)
+    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null, bool forzarEliminacion = false     )
     {
-        return await this.Eliminar((string)id);
+        return await this.Eliminar((string)id, parametros, forzarEliminacion);
     }
 
     public Entidad EntidadDespliegueAPI()
@@ -138,7 +138,7 @@ public class ServicioUsuarioDominio : ServicioEntidadGenericaBase<UsuarioDominio
     }
 
     // Validar si se encuentra el id
-    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, UsuarioDominio original)
+    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, UsuarioDominio original, bool forzarEliminacion = false)
     {
         ResultadoValidacion resultado = new();
         bool encontrado = await DB.UsuarioDominios.AnyAsync(a => a.Id == id);

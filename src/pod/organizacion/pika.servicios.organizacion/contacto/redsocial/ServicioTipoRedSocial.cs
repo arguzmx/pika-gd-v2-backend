@@ -32,23 +32,6 @@ public class ServicioTipoRedSocial : ServicioCatalogoGenericoBase, IServicioCata
 
     private DbContextOrganizacion DB { get { return (DbContextOrganizacion)_db; } }
 
-    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, ElementoCatalogo original)
-    {
-        ResultadoValidacion resultado = new();
-
-        resultado.Valido = true;
-        // Verifica que el Id no esté en uso en la tabla de RedSocial
-
-
-        
-
-
-        /*
-         * ver si el id de este modelo es usado en otra tabla
-         */
-
-        return resultado;
-    }
 
     #endregion
 

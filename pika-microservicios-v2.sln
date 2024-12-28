@@ -31,6 +31,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "seguridad.servicios", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "seguridad.servicios.mysql", "src\pod\seguridad\seguridad.servicios.mysql\seguridad.servicios.mysql.csproj", "{639E4D0B-5393-41B5-B797-999C552E0193}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contenido", "contenido", "{6C9837CE-BFF8-4210-B370-D13F607C3096}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pika.modelo.contenido", "src\pod\contenido\pika.modelo.contenido\pika.modelo.contenido.csproj", "{E189D3AB-C728-4C07-AAD2-7FE0E73C9797}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pika.servicios.contenido", "src\pod\contenido\pika.servicios.contenido\pika.servicios.contenido.csproj", "{87F118E7-D638-46E1-939B-B1C0DFA69E10}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pika.api.contenido", "src\pod\contenido\pika.api.contenido\pika.api.contenido.csproj", "{EFAB48DF-C53A-4ECC-B753-8461A3BD679D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +81,18 @@ Global
 		{639E4D0B-5393-41B5-B797-999C552E0193}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{639E4D0B-5393-41B5-B797-999C552E0193}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{639E4D0B-5393-41B5-B797-999C552E0193}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E189D3AB-C728-4C07-AAD2-7FE0E73C9797}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E189D3AB-C728-4C07-AAD2-7FE0E73C9797}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E189D3AB-C728-4C07-AAD2-7FE0E73C9797}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E189D3AB-C728-4C07-AAD2-7FE0E73C9797}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87F118E7-D638-46E1-939B-B1C0DFA69E10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87F118E7-D638-46E1-939B-B1C0DFA69E10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87F118E7-D638-46E1-939B-B1C0DFA69E10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87F118E7-D638-46E1-939B-B1C0DFA69E10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFAB48DF-C53A-4ECC-B753-8461A3BD679D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFAB48DF-C53A-4ECC-B753-8461A3BD679D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFAB48DF-C53A-4ECC-B753-8461A3BD679D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFAB48DF-C53A-4ECC-B753-8461A3BD679D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -90,6 +110,10 @@ Global
 		{5D4A07E7-BF4E-43CE-8F69-DF831F4C7AE7} = {67C17A30-DEF8-4525-8E30-BAE35111C110}
 		{99736328-EF2B-4564-8FEC-B2827DDCAD70} = {67C17A30-DEF8-4525-8E30-BAE35111C110}
 		{639E4D0B-5393-41B5-B797-999C552E0193} = {67C17A30-DEF8-4525-8E30-BAE35111C110}
+		{6C9837CE-BFF8-4210-B370-D13F607C3096} = {7E1B19B4-77C9-4666-9B9F-1FF8E455C785}
+		{E189D3AB-C728-4C07-AAD2-7FE0E73C9797} = {6C9837CE-BFF8-4210-B370-D13F607C3096}
+		{87F118E7-D638-46E1-939B-B1C0DFA69E10} = {6C9837CE-BFF8-4210-B370-D13F607C3096}
+		{EFAB48DF-C53A-4ECC-B753-8461A3BD679D} = {6C9837CE-BFF8-4210-B370-D13F607C3096}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {53F73A1B-FB3A-4382-B29E-EF7B89CF3904}

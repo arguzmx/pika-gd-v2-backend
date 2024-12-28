@@ -44,9 +44,9 @@ public class ServicioTelefono : ServicioEntidadGenericaBase<Telefono, TelefonoIn
         return await this.Actualizar((string)id, update);
     }
 
-    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null)
+    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null, bool forzarEliminacion = false)
     {
-        return await this.Eliminar((string)id);
+        return await this.Eliminar((string)id, parametros, forzarEliminacion);
     }
 
     public Entidad EntidadDespliegueAPI()
@@ -140,7 +140,7 @@ public class ServicioTelefono : ServicioEntidadGenericaBase<Telefono, TelefonoIn
     }
 
 
-    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, Telefono original)
+    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, Telefono original, bool forzarEliminacion = false)
     {
         ResultadoValidacion resultado = new();
         bool encontrado = await DB.Telefonos.AnyAsync(a => a.Id == id && a.UOrgId == _contextoUsuario!.UOrgId && a.DominioId == _contextoUsuario.DominioId);

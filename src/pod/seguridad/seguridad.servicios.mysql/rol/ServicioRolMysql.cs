@@ -82,9 +82,9 @@ public class ServicioRolMysql : ServicioEntidadGenericaBase<Rol, CreaRol, Actual
         return await this.Actualizar((string)id, update, parametros);
     }
 
-    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null)
+    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null, bool forzarEliminacion = false)
     {
-        return await this.Eliminar((string)id, parametros);
+        return await this.Eliminar((string)id, parametros, forzarEliminacion);
     }
 
     public async Task<RespuestaPayload<object>> UnicaPorIdAPI(object id, StringDictionary? parametros = null)
@@ -125,7 +125,7 @@ public class ServicioRolMysql : ServicioEntidadGenericaBase<Rol, CreaRol, Actual
         resultado.Valido = aplicacion != null && !aplicacion.RolesPersonalizados.Any(_ => _.Nombre == data.Nombre);
         return resultado;
     }
-    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, Rol original)
+    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, Rol original, bool forzarEliminacion = false)
     {
         ResultadoValidacion resultado = new();
         aplicacion = _dbSetAplicacion.FirstOrDefault(_ => _.Id == original.InstanciaAplicacionId);
@@ -301,7 +301,7 @@ public class ServicioRolMysql : ServicioEntidadGenericaBase<Rol, CreaRol, Actual
         return respuesta;
     }
 
-    public override async Task<Respuesta> Eliminar(string id, StringDictionary? parametros = null)
+    public override async Task<Respuesta> Eliminar(string id, StringDictionary? parametros = null, bool forzarEliminacion = false)
     {
         var respuesta = new Respuesta();
         try
