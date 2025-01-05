@@ -1,0 +1,52 @@
+﻿Los repositorios pueden tener cero o más volumenes asociados
+para almacenar su contenido, debido a ello en los modelos relacionales
+esiste una tabla que almacena dicha relación y que contiene la entidad VolumenRepositorio.
+
+Debido a que los volumenes para un repositorio sólo pueden asociarse y en algunos casos
+remover la asociación esta operación será creada en un controlador adicional 
+RepositorioController qie definirá los siguiente métodos:
+
+TODOS LOS METODOS de acceso a datos deberán ser implementados en el el un nuevo servicio
+en un controlado N2 que atienda la entidad VolumenRepositorio, los métodos no descritos 
+devolver 500 con Not implemented exception
+
+
+[HttpPost("/entidad/repositorio/{repoId}/volumenrepositorio/{VolumentId}")]
+Body:VolumenRepositorioCrear
+En caso existoso devuelve 200 con una copia de la entidad Volumen en base a VolumenId
+Con el post :
+
+1. VErificar que el volumen exista en el mismo dominio y uorg de no ser asi devolver 404
+2. Si ya existe un registro en VolumenRepositorio para el mismo RepositorioId y VolumenId
+simplemnte devolver 200
+3. So no existe la entidad de 2 crear una nueva con Id = Guid.Neu e isnertar
+
+
+[HttpPut("/entidad/repositorio/{repoId}/volumenrepositorio/{VolumentId}")]
+Devuelve sólo el status
+Body:RepositorioActualizar
+Con el put :
+La bísqueda del registro debe hacerse con el repoOd y VolumenId
+
+1. VErificar que el volumen exista en el mismo dominio y uorg de no ser asi devolver 404
+2. Si no existe un registro en VolumenRepositorio para el mismo RepositorioId y VolumenId
+devolver 404
+3. Si existe el registro actualizr sólo las propiedades Default y Activo si sus valores no 
+son nulos en el payload del body y devolver 200, analizar para cada uno y actualizar acorde
+
+[HttpDelete("/entidad/repositorio/{repoId}/volumenrepositorio/{VolumentId}")]
+Devuelve sólo el status
+Con el delete :
+La bísqueda del registro debe hacerse con el repoOd y VolumenId
+
+1. VErificar que el volumen exista en el mismo dominio y uorg de no ser asi devolver 404
+2. Si no existe un registro en VolumenRepositorio para el mismo RepositorioId y VolumenId
+devolver 404
+3. Si existe cualquier entidad Contenido con el mismo RepositorioId y VolumenId devolver 409 
+con error "Contenido existente en el volumen"
+4. Si no existe contenido eliminar el registro y devolver 200
+
+[HttpGet("/entidad/repositorio/{repoId}/volumenrepositorio/pagina")]
+Con get debe devolver una página con payload List<Volumen> de todos los volumenes asociados con repoId
+
+

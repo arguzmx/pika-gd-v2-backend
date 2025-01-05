@@ -52,7 +52,7 @@ public class Volumen
     /// </summary>
     [Tabla(indice: 0, visible: true)]
     [UsoCatalogoAttribute("TipoGestorEs", true)]
-    public string TipoGestorESId { get; set; }
+    public string? TipoGestorESId { get; set; }
     // [i] [a] 
     // R 128
 
@@ -118,10 +118,10 @@ public class Volumen
     // R 
 
 
-    ///// <summary>
-    ///// Tipo de gestor de enntrada salida asociado al volumen
-    ///// </summary>
-    //public TipoGestorES? TipoGestorES { get; set; }
+    /// <summary>
+    /// Tipo de gestor de enntrada salida asociado al volumen
+    /// </summary>
+    public TipoGestorES? TipoGestorES { get; set; }
 
 
     /// <summary>
