@@ -1,0 +1,18 @@
+﻿Una version vincula una lista de archivos y propieades que definen un contenido y el CRUD será
+realizado en un controlaodr N3 con la siguiente estructura
+
+.../repositorio/{rid}/Contenido/{cid}/version/{vid}
+
+Las versiones se almacenan en un repositoiro de CouchDb y se almacenarán en una coleccion denominada
+'versiones' la tarea inicial para esta entidad es crear un DbContext de CouchDb que dé soporte al CRUD
+
+El servicio de versiones expondrá vía la API todos los métodos comunes para una entidad genérica
+
+Para cada operación deberá validarse que
+	a) el repositorio de RepositorioId exista
+	b) verificar que el contenido exista y que pertenece al repositorioId
+
+Ambas validaciones devuelven 409 si no existen en el repositorio con el codidgo de error adecuado
+
+
+

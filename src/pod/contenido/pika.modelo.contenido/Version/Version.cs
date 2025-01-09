@@ -1,76 +1,73 @@
 ﻿using CouchDB.Driver.Types;
 using extensibilidad.metadatos.atributos;
+using Newtonsoft.Json;
 
 namespace pika.modelo.contenido;
 
+/// <summary>
+/// Define una coleccion de archivos y propiedades que definen una version de un contenido especifico
+/// </summary>
+[Entidad()]
+public class Version : CouchDocument
+{
 
-//[Entidad()]
-//public class Version : CouchDocument
-//{
+    /// COmo hereda de CouchDocument hay una propiedad Id 
+    /// Heredada y que debera inicializarse con un Id unico
 
-//    /// <summary>
-//    /// Identificador único del elemento al que pertenece la versión
-//    /// </summary>
-//    public string ContenidoId { get; set; }
-//    // [i] [d] 
-//    // R 128
-
-//    /// <summary>
-//    /// Indica si la versión es la activa, sólo pude existir una versión activa por elemento
-//    /// </summary>
-//    public bool Activa { get; set; } = true;
-//    // [i] [a] [d] 
-//    // R 
-
-//    /// <summary>
-//    /// Fecha de ceración de la versión
-//    /// </summary>
-//    public DateTime FechaCreacion { get; set; }
-//    // [d] Se calcula automaticamente al crear la entidad con Datetime.UTCnow
-//    // R 
-
-//    /// <summary>
-//    /// Identificadro único del creador de la versión
-//    /// </summary>
-//    public string CreadorId { get; set; }
-//    // [d] Se calcula automaticamente con el is del usuario en el JWT
-//    // R 
-
-//    /// <summary>
-//    /// Mantiene la cuenta del número de partes asociadas a la versión
-//    /// </summary>
-//    public int ConteoPartes { get; set; } = 0;
-//    // [d] Se calcula automaticamente con el crud de partes
-//    // R 
+    /// <summary>
+    /// Identificador del repositorio al que pertenece el contenido
+    /// </summary>
+    [JsonProperty("cid")]
+    public required string RepositorioId { get; set; }
 
 
-//    /// <summary>
-//    /// Mantiene el tamaño en bytes de las partes de la versión
-//    /// </summary>
-//    public long TamanoBytes { get; set; } = 0;
-//    // [d] Se calcula automaticamente con el crud de partes
-//    // R 
+    /// <summary>
+    /// Identificador del contendido al que pertenece la version
+    /// </summary>
+    [JsonProperty("cid")]
+    public required string ContenidoId { get; set; }
 
-//    /// <summary>
-//    /// Identificador único del volumen para la version
-//    /// </summary>
-//    public string VolumenId { get; set; }
-//    // [i] [d] 
-//    // R 128
+    /// <summary>
+    /// Indica si la versión es la activa, sólo pude existir una versión activa por elemento
+    /// </summary>
+    [JsonProperty("a")]
+    public bool Activa { get; set; } = true;
+
+    /// <summary>
+    /// Fecha de ceración de la versión
+    /// </summary>
+    [JsonProperty("fc")]
+    public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
+
+    /// <summary>
+    /// Fecha de ceración de la versión
+    /// </summary>
+    [JsonProperty("fc")]
+    public DateTime FechaActualizacion { get; set; } = DateTime.UtcNow;
 
 
-//    /// <summary>
-//    /// LIsta de anexos asociados a la versión de contenido
-//    /// </summary>
-//    public List<Anexo> Anexos { get; set; } = new List<Anexo>();
-//    // Se actualiza vía el CRUD de Anexos
+    /// <summary>
+    /// Mantiene la cuenta del número de partes asociadas a la versión
+    /// </summary>
+    [JsonProperty("p")]
+    public int ConteoPartes { get; set; } = 0;
 
-//    //[XmlIgnore]
-//    //[JsonIgnore]
-//    //public Contenido Contenido { get; set; }
+    /// <summary>
+    /// Mantiene el tamaño en bytes de las partes de la versión
+    /// </summary>
+    [JsonProperty("t")]
+    public long TamanoBytes { get; set; } = 0;
 
-//    //[XmlIgnore]
-//    //[JsonIgnore]
-//    //public Volumen Volumen { get; set; }
+    /// <summary>
+    /// Identificador único del volumen para la version
+    /// </summary>
+    [JsonProperty("vid")]
+    public required string VolumenId { get; set; }
 
-//}
+    /// <summary>
+    /// LIsta de anexos asociados a la versión de contenido
+    /// </summary>
+    [JsonProperty("as")]
+    public List<Anexo> Anexos { get; set; } = [];
+
+}
