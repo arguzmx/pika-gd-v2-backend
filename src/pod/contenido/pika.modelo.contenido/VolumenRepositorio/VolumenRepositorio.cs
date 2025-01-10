@@ -33,11 +33,11 @@ public class VolumenRepositorio
     /// <summary>
     /// Determina si el volumen es el default para el contenido del repositorio
     /// </summary>
-    public bool Default { get; set; } = false;
+    public bool? Default { get; set; } = false;
 
 
     /// <summary>
     /// Determina si el volumen se encuentra activo para el repositorio
     /// </summary>
-    public bool Activo { get; set; } = true;
+    public bool? Activo { get; set; } = true;
 }

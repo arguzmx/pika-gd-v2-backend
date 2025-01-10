@@ -15,7 +15,7 @@ public class ConfiguracionVolumen : IEntityTypeConfiguration<Volumen>
         builder.Property(e => e.DominioId).IsRequired().HasMaxLength(128);
         builder.Property(e => e.UOrgId).IsRequired().HasMaxLength(128);
         builder.Property(e => e.Nombre).IsRequired().HasMaxLength(500);
-        builder.Property(e => e.TipoGestorESId).IsRequired().HasMaxLength(128);
+        //builder.Property(e => e.TipoGestorESId).IsRequired().HasMaxLength(128);
         builder.Property(e => e.TamanoMaximo).IsRequired();
         builder.Property(e => e.Activo).IsRequired();
         builder.Property(e => e.EscrituraHabilitada).IsRequired();

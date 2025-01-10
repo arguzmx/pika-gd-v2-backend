@@ -21,10 +21,6 @@ public class ConfiguracionRepositorio : IEntityTypeConfiguration<Repositorio>
         builder.Property(e => e.DominioId).IsRequired().HasMaxLength(128);
         builder.Property(e => e.UOrgId).IsRequired().HasMaxLength(128);
         builder.Property(e => e.Nombre).IsRequired().HasMaxLength(500);
-        builder.Property(e => e.VolumenId).IsRequired().HasMaxLength(500);
-
-        //builder.HasOne(x => x.Volumen).WithMany(y => y.Repositorios).HasForeignKey(x => x.VolumenId).OnDelete(DeleteBehavior.Cascade);
-
     }
 
 }

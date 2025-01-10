@@ -47,14 +47,14 @@ public class Volumen
     // [i] [a] [d] 
     // R 500
 
-    /// <summary>
-    /// Identificador único del  tipo de gestor, es necesario para la configuración
-    /// </summary>
-    [Tabla(indice: 0, visible: true)]
-    [UsoCatalogoAttribute("TipoGestorEs", true)]
-    public string? TipoGestorESId { get; set; }
-    // [i] [a] 
-    // R 128
+    ///// <summary>
+    ///// Identificador único del  tipo de gestor, es necesario para la configuración
+    ///// </summary>
+    //[Tabla(indice: 0, visible: true)]
+    //[UsoCatalogoAttribute("TipoGestorEs", true)]
+    //public string? TipoGestorESId { get; set; }
+    //// [i] [a] 
+    //// R 128
 
     /// <summary>
     /// Tamaño maximo del volumen en bytes, 0 indidica ilimitado
@@ -118,16 +118,10 @@ public class Volumen
     // R 
 
 
-    /// <summary>
-    /// Tipo de gestor de enntrada salida asociado al volumen
-    /// </summary>
-    public TipoGestorES? TipoGestorES { get; set; }
-
-
-    /// <summary>
-    /// Repositorios asociados al volumen 
-    /// </summary>
-    public List<Repositorio> Repositorios { get; set; }
+    ///// <summary>
+    ///// Tipo de gestor de enntrada salida asociado al volumen
+    ///// </summary>
+    //public TipoGestorES? TipoGestorES { get; set; }
 
     /// <summary>
     /// Contenidos asociados al volumen

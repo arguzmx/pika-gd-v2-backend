@@ -20,13 +20,9 @@ namespace pika.servicios.contenido.volumen;
 public class ServicioVolumen : ServicioEntidadGenericaBase<Volumen, VolumenInsertar, VolumenActualizar, VolumenDespliegue, string>,
     IServicioEntidadAPI, IServicioVolumen
 {
-
-    private DbContextContenido localContext;
-
     public ServicioVolumen(DbContextContenido context, ILogger<ServicioVolumen> logger, IReflectorEntidadesAPI Reflector, IDistributedCache cache) : base(context, context.Volumenes, logger, Reflector, cache)
     {
         interpreteConsulta = new InterpreteConsultaMySQL();
-        localContext = context;
     }
 
 
@@ -153,9 +149,13 @@ public class ServicioVolumen : ServicioEntidadGenericaBase<Volumen, VolumenInser
         }
         else
         {
-            bool EncontradoRepositorio = await DB.Repositorios.AnyAsync(a => a.VolumenId == id);
+            //bool EncontradoRepositorio = await DB.Repositorios.AnyAsync(a => a.VolumenId == id);
             bool EncontradoContenido = await DB.Contenidos.AnyAsync(a => a.VolumenId == id);
-            if (EncontradoRepositorio || EncontradoContenido)
+            //if (EncontradoRepositorio || EncontradoContenido)
+            //{
+            //    resultado.Error = "Id".ErrorConflict("El volumen se encuentra en uso");
+            //}
+            if (EncontradoContenido)
             {
                 resultado.Error = "Id".ErrorConflict("El volumen se encuentra en uso");
             }
@@ -207,7 +207,7 @@ public class ServicioVolumen : ServicioEntidadGenericaBase<Volumen, VolumenInser
     public override Volumen ADTOFull(VolumenActualizar actualizacion, Volumen actual)
     {
         actual.Nombre = actualizacion.Nombre;
-        actual.TipoGestorESId = actualizacion.TipoGestorESId;
+        //actual.TipoGestorESId = actualizacion.TipoGestorESId;
         actual.TamanoMaximo = actualizacion.TamanoMaximo;
         actual.Activo = actualizacion.Activo;
         actual.EscrituraHabilitada = actualizacion.EscrituraHabilitada;
@@ -222,7 +222,7 @@ public class ServicioVolumen : ServicioEntidadGenericaBase<Volumen, VolumenInser
             UOrgId = _contextoUsuario!.UOrgId!,
             DominioId = _contextoUsuario!.DominioId!,
             Nombre = data.Nombre,
-            TipoGestorESId = data.TipoGestorESId,
+            //TipoGestorESId = data.TipoGestorESId,
             TamanoMaximo = data.TamanoMaximo,
             Activo = data.Activo,
             EscrituraHabilitada = data.EscrituraHabilitada

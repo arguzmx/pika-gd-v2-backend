@@ -4,22 +4,23 @@ using pika.modelo.contenido;
 
 namespace pika.servicios.contenido.dbcontext;
 
-//public class ContenidoCouchDbContext : CouchContext
-//{
-//    public ContenidoCouchDbContext(CouchOptions<ContenidoCouchDbContext> options) : base(options)
-//    {
+public class VersionCouchDbContext : CouchContext
+{
+    public const string CollecionVolumenes = "cont$volumenes";
+    public VersionCouchDbContext(CouchOptions<VersionCouchDbContext> options) : base(options)
+    {
 
-//    }
+    }
 
-//    protected override void OnConfiguring(CouchOptionsBuilder optionsBuilder)
-//    {
+    protected override void OnConfiguring(CouchOptionsBuilder optionsBuilder)
+    {
 
-//    }
+    }
 
-//    public CouchDatabase<Contenido> Contenidos { get; set; }
+    public CouchDatabase<EntidadVersion> Versiones { get; set; }
 
-//    protected override void OnDatabaseCreating(CouchDatabaseBuilder databaseBuilder)
-//    {
-//        databaseBuilder.Document<Contenido>().ToDatabase("contenidos");
-//    }
-//}
+    protected override void OnDatabaseCreating(CouchDatabaseBuilder databaseBuilder)
+    {
+        databaseBuilder.Document<EntidadVersion>().ToDatabase(CollecionVolumenes);
+    }
+}

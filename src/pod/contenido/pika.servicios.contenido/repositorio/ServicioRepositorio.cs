@@ -285,7 +285,6 @@ public class ServicioRepositorio : ServicioEntidadGenericaBase<Repositorio, Repo
     public override Repositorio ADTOFull(RepositorioActualizar actualizacion, Repositorio actual)
     {
         actual.Nombre = actualizacion.Nombre;
-        actual.VolumenId = actualizacion.VolumenId;
         return actual;
     }
 
@@ -297,8 +296,6 @@ public class ServicioRepositorio : ServicioEntidadGenericaBase<Repositorio, Repo
             UOrgId = _contextoUsuario!.UOrgId!,
             DominioId = _contextoUsuario!.DominioId!,
             Nombre = data.Nombre,
-            VolumenId = data.VolumenId
-
         };
         return repositorio;
     }
@@ -309,7 +306,6 @@ public class ServicioRepositorio : ServicioEntidadGenericaBase<Repositorio, Repo
         {
             Id = data.Id,
             Nombre = data.Nombre,
-            VolumenId = data.VolumenId
         };
         return repositorioDespliegue;
     }

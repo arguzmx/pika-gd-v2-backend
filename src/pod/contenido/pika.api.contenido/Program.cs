@@ -6,7 +6,10 @@ using comunes.interservicio.primitivas.seguridad;
 using CouchDB.Driver.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using pika.api.contenido.seguridad;
+using pika.servicios.contenido;
 using pika.servicios.contenido.dbcontext;
+using pika.servicios.contenido.repositorio;
+using pika.servicios.contenido.volumenrepositorio;
 using System.Reflection;
 
 namespace pika.api.contenido;
@@ -41,14 +44,15 @@ public class Program
 
         builder.Services.AddDbContext<DbContextContenido>(options =>
         {
-            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString), options => { options.EnableStringComparisonTranslations(); });
+
         });
 
-        //builder.Services.AddCouchContext<ContenidoCouchDbContext>(builder => builder
-        //    .EnsureDatabaseExists()
-        //    .UseEndpoint(configuration.GetValue<string>("CouchDB:endpoint")!)
-        //    .UseBasicAuthentication(username: configuration.GetValue<string>("CouchDB:username")!,
-        //    password: configuration.GetValue<string>("CouchDB:password")!));
+        builder.Services.AddCouchContext<VersionCouchDbContext>(builder => builder
+            .EnsureDatabaseExists()
+            .UseEndpoint(configuration.GetValue<string>("CouchDB:endpoint")!)
+            .UseBasicAuthentication(username: configuration.GetValue<string>("CouchDB:username")!,
+            password: configuration.GetValue<string>("CouchDB:password")!));
 
 
         builder.Services.AddControllers();
@@ -59,6 +63,7 @@ public class Program
         builder.Services.AddSingleton<ICacheSeguridad, CacheSeguridad>();
         builder.Services.AddTransient<IProxySeguridad, ProxySeguridad>();
         builder.Services.AddTransient<ICacheAtributos, CacheAtributos>();
+        builder.Services.AddTransient<IServicioVolumenRepositorio, ServicioVolumenRepositorio>();
         builder.Services.AddDistributedMemoryCache();
         // Añadir la extensión para los servicios de API genérica
         builder.Services.AddServiciosEntidadAPI();
