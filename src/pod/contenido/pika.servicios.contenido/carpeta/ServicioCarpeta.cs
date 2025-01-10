@@ -333,6 +333,45 @@ public class ServicioCarpeta : ServicioEntidadGenericaBase<Carpeta, CarpetaInser
         return carpeta != null;
     }
 
+
+    public virtual async Task<RespuestaPayload<CarpetaDespliegue>> Insertar(CarpetaInsertar data, StringDictionary? parametros = null)
+    {
+        RespuestaPayload<CarpetaDespliegue> respuesta = new RespuestaPayload<CarpetaDespliegue>();
+        try
+        {
+            ResultadoValidacion resultadoValidacion = await ValidarInsertar(data);
+            if (resultadoValidacion.Valido)
+            {
+                Carpeta entidad = ADTOFull(data);
+                _dbSetFull.Add(entidad);
+                await _db.SaveChangesAsync();
+                respuesta.Ok = true;
+                respuesta.HttpCode = HttpCode.Ok;
+                respuesta.Payload = ADTODespliegue(entidad);
+            }
+            else
+            {
+                respuesta.Error = resultadoValidacion.Error;
+                respuesta.HttpCode = resultadoValidacion.Error?.HttpCode ?? HttpCode.None;
+            }
+        }
+        catch (Exception ex2)
+        {
+            Exception ex = ex2;
+            _logger.LogError("Insertar " + ex.Message);
+            _logger.LogError($"{ex}");
+            respuesta.Error = new ErrorProceso
+            {
+                Codigo = "",
+                HttpCode = HttpCode.ServerError,
+                Mensaje = ex.Message
+            };
+            respuesta.HttpCode = HttpCode.ServerError;
+        }
+
+        return respuesta;
+    }
+
     #endregion
 
 }

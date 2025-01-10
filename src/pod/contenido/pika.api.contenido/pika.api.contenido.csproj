@@ -8,8 +8,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="apigenerica.model" Version="1.0.5" />
-		<PackageReference Include="apigenerica.primitivas" Version="1.0.5" />
-		<PackageReference Include="comunes.interservicio.primitivas" Version="1.0.3" />
+		<PackageReference Include="apigenerica.primitivas" Version="1.0.8" />
+		<PackageReference Include="comunes.interservicio.primitivas" Version="1.0.6" />
 		<PackageReference Include="comunes.primitivas" Version="1.0.1" />
 		<PackageReference Include="OpenIddict.AspNetCore" Version="5.8.0" />
 		<PackageReference Include="CouchDB.NET" Version="3.4.0" />

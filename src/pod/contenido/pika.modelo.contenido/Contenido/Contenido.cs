@@ -125,7 +125,7 @@ public class Contenido
     public Carpeta Carpeta { get; set; }
 
 
-    //[XmlIgnore]
-    //[JsonIgnore]
-    //public List<Version> Versiones { get; set; }
+    [XmlIgnore]
+    [JsonIgnore]
+    public List<EntidadVersion> Versiones { get; set; }
 }

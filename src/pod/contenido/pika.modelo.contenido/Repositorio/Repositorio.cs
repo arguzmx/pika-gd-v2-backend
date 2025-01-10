@@ -47,25 +47,6 @@ public class Repositorio
     // [i] [a] [d]
     // R 500
 
-
-    /// <summary>
-    /// Volumen para almacenar los archivos relacionado con el contenido
-    /// </summary>
-    [Tabla(indice: 0, visible: true)]
-    [UsoCatalogoAttribute("Volumen", true)]
-    public string VolumenId { get; set; }
-    // [i] [a] [d]
-    // R 500
-
-
-    /// <summary>
-    /// Propiedad de navegacion para el volumen del repositorio
-    /// </summary>
-    [XmlIgnore]
-    [JsonIgnore]
-    public Volumen Volumen { get; set; }
-
-
     [XmlIgnore]
     [JsonIgnore]
     public List<Carpeta> Carpetas { get; set; }
