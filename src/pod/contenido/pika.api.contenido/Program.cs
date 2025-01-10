@@ -48,11 +48,11 @@ public class Program
 
         });
 
-        builder.Services.AddCouchContext<VersionCouchDbContext>(builder => builder
-            .EnsureDatabaseExists()
-            .UseEndpoint(configuration.GetValue<string>("CouchDB:endpoint")!)
-            .UseBasicAuthentication(username: configuration.GetValue<string>("CouchDB:username")!,
-            password: configuration.GetValue<string>("CouchDB:password")!));
+        //builder.Services.AddCouchContext<VersionCouchDbContext>(builder => builder
+        //    .EnsureDatabaseExists()
+        //    .UseEndpoint(configuration.GetValue<string>("CouchDB:endpoint")!)
+        //    .UseBasicAuthentication(username: configuration.GetValue<string>("CouchDB:username")!,
+        //    password: configuration.GetValue<string>("CouchDB:password")!));
 
 
         builder.Services.AddControllers();
