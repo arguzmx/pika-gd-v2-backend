@@ -221,4 +221,45 @@ public class ServicioContenido : ServicioEntidadGenericaBase<Contenido, Contenid
         return contenidoDespliegue;
     }
     #endregion
+
+
+
+    public override async Task<RespuestaPayload<ContenidoDespliegue>> Insertar(ContenidoInsertar data, StringDictionary? parametros = null)
+    {
+        RespuestaPayload<ContenidoDespliegue> respuesta = new RespuestaPayload<ContenidoDespliegue>();
+        try
+        {
+            ResultadoValidacion resultadoValidacion = await ValidarInsertar(data);
+            if (resultadoValidacion.Valido)
+            {
+                Contenido entidad = ADTOFull(data);
+                _dbSetFull.Add(entidad);
+                await _db.SaveChangesAsync();
+                respuesta.Ok = true;
+                respuesta.HttpCode = HttpCode.Ok;
+                respuesta.Payload = ADTODespliegue(entidad);
+            }
+            else
+            {
+                respuesta.Error = resultadoValidacion.Error;
+                respuesta.HttpCode = resultadoValidacion.Error?.HttpCode ?? HttpCode.None;
+            }
+        }
+        catch (Exception ex2)
+        {
+            Exception ex = ex2;
+            _logger.LogError("Insertar " + ex.Message);
+            _logger.LogError($"{ex}");
+            respuesta.Error = new ErrorProceso
+            {
+                Codigo = "",
+                HttpCode = HttpCode.ServerError,
+                Mensaje = ex.Message
+            };
+            respuesta.HttpCode = HttpCode.ServerError;
+        }
+
+        return respuesta;
+    }
+
 }
