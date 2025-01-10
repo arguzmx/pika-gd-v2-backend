@@ -12,7 +12,7 @@ using pika.servicios.contenido.dbcontext;
 namespace pika.servicios.contenido.data.migrations
 {
     [DbContext(typeof(DbContextContenido))]
-    [Migration("20250110162135_MigracionInicial")]
+    [Migration("20250110165252_MigracionInicial")]
     partial class MigracionInicial
     {
         /// <inheritdoc />
