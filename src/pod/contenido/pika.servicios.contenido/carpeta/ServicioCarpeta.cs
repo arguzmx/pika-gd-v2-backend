@@ -174,11 +174,16 @@ public class ServicioCarpeta : ServicioEntidadGenericaBase<Carpeta, CarpetaInser
         
             if(!parcial)
             {
+                List<Carpeta> subCarpetas = [];
                 foreach (var c in carpetas) { 
                     var tmp = ArbolRecursivo(c.Id, parcial, incluirPayload, repositorioId);
                     if (tmp.Count > 0) {
-                        carpetas.AddRange(tmp);
+                        subCarpetas.AddRange(tmp);
                     }
+                }
+
+                if (subCarpetas.Count > 0) { 
+                    carpetas.AddRange(subCarpetas);
                 }
             }
         }
