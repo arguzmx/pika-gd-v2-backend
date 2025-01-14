@@ -2,6 +2,7 @@
 using CouchDB.Driver.Types;
 using extensibilidad.metadatos.atributos;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Xml.Serialization;
 
 namespace pika.modelo.contenido;
@@ -121,11 +122,13 @@ public class Contenido
     public Repositorio Repositorio { get; set; }
 
     [XmlIgnore]
-    [System.Text.Json.Serialization.JsonIgnore]
+    [JsonIgnore]
     public Carpeta Carpeta { get; set; }
 
 
-    //[XmlIgnore]
-    //[JsonIgnore]
-    //public List<EntidadVersion> Versiones { get; set; }
+    [XmlIgnore]
+    [JsonIgnore]
+    [NotMapped]
+
+    public List<EntidadVersion> Versiones { get; set; }
 }

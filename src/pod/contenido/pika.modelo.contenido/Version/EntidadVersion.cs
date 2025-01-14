@@ -1,6 +1,7 @@
 ﻿using CouchDB.Driver.Types;
 using extensibilidad.metadatos.atributos;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace pika.modelo.contenido;
 
@@ -10,14 +11,13 @@ namespace pika.modelo.contenido;
 [Entidad()]
 public class EntidadVersion : CouchDocument
 {
-
     /// COmo hereda de CouchDocument hay una propiedad Id 
     /// Heredada y que debera inicializarse con un Id unico
 
     /// <summary>
     /// Identificador del repositorio al que pertenece el contenido
     /// </summary>
-    [JsonProperty("cid")]
+    [JsonProperty("rid")]
     public required string RepositorioId { get; set; }
 
 
@@ -42,7 +42,7 @@ public class EntidadVersion : CouchDocument
     /// <summary>
     /// Fecha de ceración de la versión
     /// </summary>
-    [JsonProperty("fc")]
+    [JsonProperty("fa")]
     public DateTime FechaActualizacion { get; set; } = DateTime.UtcNow;
 
 
@@ -64,10 +64,10 @@ public class EntidadVersion : CouchDocument
     [JsonProperty("vid")]
     public required string VolumenId { get; set; }
 
-    /// <summary>
-    /// LIsta de anexos asociados a la versión de contenido
-    /// </summary>
-    [JsonProperty("as")]
-    public List<Anexo> Anexos { get; set; } = [];
+    ///// <summary>
+    ///// LIsta de anexos asociados a la versión de contenido
+    ///// </summary>
+    //[JsonProperty("as")]
+    //public List<Anexo> Anexos { get; set; } = [];
 
 }

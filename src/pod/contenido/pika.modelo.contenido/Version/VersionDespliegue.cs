@@ -14,7 +14,7 @@ public class VersionDespliegue
     /// <summary>
     /// Indica si la versión es la activa, sólo pude existir una versión activa por elemento
     /// </summary>
-    public bool Activa { get; set; } = true;
+    public bool? Activa { get; set; } = true;
 
     /// <summary>
     /// Fecha de ceración de la versión

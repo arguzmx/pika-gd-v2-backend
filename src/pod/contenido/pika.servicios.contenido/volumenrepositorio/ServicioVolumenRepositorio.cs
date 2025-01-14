@@ -18,7 +18,8 @@ using System.Text.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace pika.servicios.contenido.volumenrepositorio;
-
+#pragma warning disable CS8603 // Possible null reference return.
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
 [ServicioEntidadAPI(typeof(VolumenRepositorio))]
 public class ServicioVolumenRepositorio : ServicioEntidadGenericaBase<VolumenRepositorio, VolumenRepositorioCrear, VolumenRepositorioActualizar, VolumenRepositorio, string>,
     IServicioVolumenRepositorio
@@ -378,3 +379,5 @@ public class ServicioVolumenRepositorio : ServicioEntidadGenericaBase<VolumenRep
 
     #endregion
 }
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
+#pragma warning restore CS8603 // Possible null reference return.

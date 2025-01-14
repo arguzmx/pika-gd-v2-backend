@@ -48,11 +48,11 @@ public class Program
 
         });
 
-        //builder.Services.AddCouchContext<VersionCouchDbContext>(builder => builder
-        //    .EnsureDatabaseExists()
-        //    .UseEndpoint(configuration.GetValue<string>("CouchDB:endpoint")!)
-        //    .UseBasicAuthentication(username: configuration.GetValue<string>("CouchDB:username")!,
-        //    password: configuration.GetValue<string>("CouchDB:password")!));
+        builder.Services.AddCouchContext<VersionCouchDbContext>(builder => builder
+            .EnsureDatabaseExists()
+            .UseEndpoint(configuration.GetValue<string>("CouchDB:endpoint")!)
+            .UseBasicAuthentication(username: configuration.GetValue<string>("CouchDB:username")!,
+            password: configuration.GetValue<string>("CouchDB:password")!));
 
 
         builder.Services.AddControllers();
@@ -64,6 +64,8 @@ public class Program
         builder.Services.AddTransient<IProxySeguridad, ProxySeguridad>();
         builder.Services.AddTransient<ICacheAtributos, CacheAtributos>();
         builder.Services.AddTransient<IServicioVolumenRepositorio, ServicioVolumenRepositorio>();
+        builder.Services.AddTransient<IServicioRepositorio, ServicioRepositorio>();
+        builder.Services.AddTransient<IServicioContenido, ServicioContenido>();
         builder.Services.AddDistributedMemoryCache();
         // Añadir la extensión para los servicios de API genérica
         builder.Services.AddServiciosEntidadAPI();
