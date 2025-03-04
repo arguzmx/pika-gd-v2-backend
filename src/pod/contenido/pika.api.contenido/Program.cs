@@ -44,6 +44,18 @@ public class Program
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
         });
 
+        // Add services to the container.
+        builder.Services.AddCors(c =>
+        {
+            c.AddPolicy("default", p =>
+            {
+                p.AllowAnyMethod();
+                p.AllowAnyOrigin();
+                p.AllowAnyHeader();
+            });
+        });
+
+
         //builder.Services.AddCouchContext<ContenidoCouchDbContext>(builder => builder
         //    .EnsureDatabaseExists()
         //    .UseEndpoint(configuration.GetValue<string>("CouchDB:endpoint")!)
@@ -91,10 +103,12 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+        
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
+        app.UseCors("default");
         app.Run();
     }
 }

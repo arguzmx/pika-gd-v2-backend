@@ -41,6 +41,16 @@ public class Program
             options.UseInMemoryStore();
         });
 
+        builder.Services.AddCors(c =>
+        {
+            c.AddPolicy("default", p =>
+            {
+                p.AllowAnyMethod();
+                p.AllowAnyOrigin();
+                p.AllowAnyHeader();
+            });
+        });
+
         // Register the Quartz.NET service and configure it to block shutdown until jobs are complete.
         builder.Services.AddQuartzHostedService(options => options.AwaitApplicationStarted = true);
 
@@ -106,7 +116,7 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        app.UseCors("default");
         app.UseHttpsRedirection();
 
         app.UseAuthentication();

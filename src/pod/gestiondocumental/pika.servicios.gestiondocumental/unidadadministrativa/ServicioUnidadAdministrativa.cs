@@ -36,7 +36,7 @@ public class ServicioUnidadAdministrativa : ServicioEntidadGenericaBase<UnidadAd
         return await this.Actualizar((string)id, update, parametros);
     }
 
-    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null)
+    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null, bool forzarEliminacion = false)
     {
         return await this.Eliminar((string)id, parametros);
     }
@@ -128,7 +128,7 @@ public class ServicioUnidadAdministrativa : ServicioEntidadGenericaBase<UnidadAd
     }
 
 
-    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, UnidadAdministrativa original)
+    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, UnidadAdministrativa original, bool forzarEliminacion = false)
     {
         ResultadoValidacion resultado = new();
         bool encontrado = await DB.UnidadesAdministrativas.AnyAsync(a => a.Id == id);
@@ -145,6 +145,12 @@ public class ServicioUnidadAdministrativa : ServicioEntidadGenericaBase<UnidadAd
         }
 
         return resultado;
+    }
+
+
+    public override Task<Respuesta> EliminarAPI(List<string> ids, StringDictionary? parametros = null, bool forzarEliminacion = false)
+    {
+        return base.EliminarAPI(ids, parametros, forzarEliminacion);
     }
 
 

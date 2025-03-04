@@ -45,6 +45,16 @@ public class Program
 
         builder.Services.AddControllers();
 
+        builder.Services.AddCors(c =>
+        {
+            c.AddPolicy("default", p =>
+            {
+                p.AllowAnyMethod();
+                p.AllowAnyOrigin();
+                p.AllowAnyHeader();
+            });
+        });
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddSingleton<IProveedorAplicaciones, ConfiguracionSeguridad>();
@@ -77,7 +87,7 @@ public class Program
         UpdateDatabase(app);
 
         app.UseEntidadAPI();
-
+        app.UseCors("default");
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

@@ -135,7 +135,7 @@ public class ServicioCuadroClasificacion : ServicioEntidadGenericaBase<CuadroCla
         return resultado;
     }
 
-    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, CuadroClasificacion original)
+    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, CuadroClasificacion original, bool forzarEliminacion = false)
     {
         ResultadoValidacion resultado = new();
         bool encontrado = await DB.CuadrosClasificacion.AnyAsync(a => a.UOrgId == _contextoUsuario!.UOrgId
@@ -214,6 +214,11 @@ public class ServicioCuadroClasificacion : ServicioEntidadGenericaBase<CuadroCla
             Id = data.Id
         };
         return cuadroclasificacion;
+    }
+
+    public Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null, bool forzarEliminacion = false)
+    {
+        throw new NotImplementedException();
     }
 
 

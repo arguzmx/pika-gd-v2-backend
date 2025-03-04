@@ -1,5 +1,4 @@
-﻿using apigenerica.model.abstracciones;
-using apigenerica.model.interpretes;
+﻿using apigenerica.model.interpretes;
 using apigenerica.model.modelos;
 using apigenerica.model.reflectores;
 using apigenerica.model.servicios;
@@ -35,7 +34,7 @@ public class ServicioSerieDocumental : ServicioEntidadGenericaBase<SerieDocument
         return await this.Actualizar((string)id, update, parametros);
     }
 
-    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null)
+    public async Task<Respuesta> EliminarAPI(object id, StringDictionary? parametros = null, bool forzarEliminacion = false)
     {
         return await this.Eliminar((string)id, parametros);
     }
@@ -127,7 +126,7 @@ public class ServicioSerieDocumental : ServicioEntidadGenericaBase<SerieDocument
     }
 
 
-    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, SerieDocumental original)
+    public override async Task<ResultadoValidacion> ValidarEliminacion(string id, SerieDocumental original, bool forzarEliminacion = false)
     {
         ResultadoValidacion resultado = new();
         bool encontrado = await DB.SerieDocumentales.AnyAsync(a => a.Id == id);
