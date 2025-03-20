@@ -7,9 +7,9 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="apigenerica.model" Version="1.0.6" />
-		<PackageReference Include="apigenerica.primitivas" Version="1.0.9" />
-		<PackageReference Include="comunes.interservicio.primitivas" Version="1.0.3" />
+		<PackageReference Include="apigenerica.model" Version="1.1.1" />
+		<PackageReference Include="apigenerica.primitivas" Version="1.1.1" />
+		<PackageReference Include="comunes.interservicio.primitivas" Version="1.0.7" />
 		<PackageReference Include="comunes.primitivas" Version="1.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
 		<PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />

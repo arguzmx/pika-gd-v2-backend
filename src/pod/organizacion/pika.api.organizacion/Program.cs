@@ -1,15 +1,18 @@
-using apigenerica.model.reflectores;
+
 using apigenerica.primitivas;
 using apigenerica.primitivas.aplicacion;
 using apigenerica.primitivas.seguridad;
 using comunes.interservicio.primitivas;
 using comunes.interservicio.primitivas.seguridad;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using pika.api.organizacion.seguridad;
 using pika.servicios.organizacion.dbcontext;
 using Quartz;
-using Serilog;
 using System.Reflection;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace pika.api.organizacion;
 
@@ -103,6 +106,23 @@ public class Program
         });
 
         builder.Services.AddHostedService<Worker>();
+
+        //builder.Services.Configure<JsonOptions>(options =>
+        //{
+        //    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        //    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        //    options.JsonSerializerOptions.WriteIndented = false;
+        //    options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Default;
+        //    options.JsonSerializerOptions.AllowTrailingCommas = true;
+        //    options.JsonSerializerOptions.MaxDepth = 3;
+        //    options.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
+        //});
+        builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    });
+
         var app = builder.Build();
 
         UpdateDatabase(app);

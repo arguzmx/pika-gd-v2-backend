@@ -80,8 +80,7 @@ public class ServicioUsuarioDominio : ServicioEntidadGenericaBase<UsuarioDominio
     {
         var add = data.Deserialize<UsuarioDominioInsertar>(JsonAPIDefaults());
         var temp = await this.Insertar(add);
-        RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
-        return respuesta;
+        return temp.ReserializePayloadCamelCase();
     }
 
     public async Task<RespuestaPayload<PaginaGenerica<object>>> PaginaAPI(Consulta consulta, StringDictionary? parametros = null)
@@ -103,16 +102,13 @@ public class ServicioUsuarioDominio : ServicioEntidadGenericaBase<UsuarioDominio
     public async Task<RespuestaPayload<object>> UnicaPorIdAPI(object id, StringDictionary? parametros = null)
     {
         var temp = await this.UnicaPorId((string)id);
-        RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
-        return respuesta;
+        return temp.ReserializePayloadCamelCase();
     }
 
     public async Task<RespuestaPayload<object>> UnicaPorIdDespliegueAPI(object id, StringDictionary? parametros = null)
     {
         var temp = await this.UnicaPorIdDespliegue((string)id);
-
-        RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
-        return respuesta;
+        return temp.ReserializePayloadCamelCase();
     }
 
 
