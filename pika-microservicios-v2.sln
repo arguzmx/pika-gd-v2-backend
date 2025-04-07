@@ -47,6 +47,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pika.modelo.gestiondocument
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pika.servicios.gestiondocumental", "src\pod\gestiondocumental\pika.servicios.gestiondocumental\pika.servicios.gestiondocumental.csproj", "{5005C89D-CDF9-45A3-BB8C-A1CA1EA652AA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Almacenamiento", "Almacenamiento", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pika.comunes.almacenamiento", "src\libs\almacenamiento\pika.comunes.almacenamiento\pika.comunes.almacenamiento.csproj", "{E56DA1DF-B816-4FB1-80F9-70395EDCC126}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pika.servicio.secretos", "src\libs\secretos\pika.servicio.secretos\pika.servicio.secretos.csproj", "{D7FDC28F-E540-45F5-BA48-2A7BD25A67B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +119,14 @@ Global
 		{5005C89D-CDF9-45A3-BB8C-A1CA1EA652AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5005C89D-CDF9-45A3-BB8C-A1CA1EA652AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5005C89D-CDF9-45A3-BB8C-A1CA1EA652AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E56DA1DF-B816-4FB1-80F9-70395EDCC126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E56DA1DF-B816-4FB1-80F9-70395EDCC126}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E56DA1DF-B816-4FB1-80F9-70395EDCC126}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E56DA1DF-B816-4FB1-80F9-70395EDCC126}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7FDC28F-E540-45F5-BA48-2A7BD25A67B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7FDC28F-E540-45F5-BA48-2A7BD25A67B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7FDC28F-E540-45F5-BA48-2A7BD25A67B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7FDC28F-E540-45F5-BA48-2A7BD25A67B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -138,6 +152,9 @@ Global
 		{FA35C22F-1CBD-4484-8E6B-A781F1B97AF7} = {61EC243E-E9F9-4024-BD43-8C8A18C292B1}
 		{28967BCB-B926-49D9-89D3-E01A7CBBC043} = {61EC243E-E9F9-4024-BD43-8C8A18C292B1}
 		{5005C89D-CDF9-45A3-BB8C-A1CA1EA652AA} = {61EC243E-E9F9-4024-BD43-8C8A18C292B1}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {4C44E394-9287-4212-BBD9-E4A4324DEF9E}
+		{E56DA1DF-B816-4FB1-80F9-70395EDCC126} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{D7FDC28F-E540-45F5-BA48-2A7BD25A67B6} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {53F73A1B-FB3A-4382-B29E-EF7B89CF3904}
