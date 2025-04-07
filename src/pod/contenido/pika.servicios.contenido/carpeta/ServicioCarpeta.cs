@@ -315,23 +315,23 @@ public class ServicioCarpeta : ServicioEntidadGenericaBase<Carpeta, CarpetaInser
             if (string.IsNullOrEmpty(padreId))
             {
                 carpeta = await this.DB.Carpetas.FirstOrDefaultAsync(c => c.RepositorioId == repositorioId
-                && c.Id != carpetaId && c.Nombre.Equals(nombre, StringComparison.InvariantCultureIgnoreCase) && c.EsRaiz == true);
+                && c.Id != carpetaId && c.Nombre.ToLower() == nombre.ToLower() && c.EsRaiz == true);
             }
             else
             {
                 carpeta = await this.DB.Carpetas.FirstOrDefaultAsync(c => c.RepositorioId == repositorioId
-                && c.Id != carpetaId && c.Nombre.Equals(nombre, StringComparison.InvariantCultureIgnoreCase) && c.CarpetaPadreId == padreId);
+                && c.Id != carpetaId && c.Nombre.ToLower() == nombre.ToLower() && c.CarpetaPadreId == padreId);
             }
         }
         else
         {
             if (string.IsNullOrEmpty(padreId))
             {
-                carpeta = await this.DB.Carpetas.FirstOrDefaultAsync(c => c.RepositorioId == repositorioId && c.Nombre.Equals(nombre, StringComparison.InvariantCultureIgnoreCase) && c.EsRaiz == true);
+                carpeta = await this.DB.Carpetas.FirstOrDefaultAsync(c => c.RepositorioId == repositorioId && c.Nombre.ToLower() == nombre.ToLower() && c.EsRaiz == true);
             }
             else
             {
-                carpeta = await this.DB.Carpetas.FirstOrDefaultAsync(c => c.RepositorioId == repositorioId && c.Nombre.Equals(nombre, StringComparison.InvariantCultureIgnoreCase) && c.CarpetaPadreId == padreId);
+                carpeta = await this.DB.Carpetas.FirstOrDefaultAsync(c => c.RepositorioId == repositorioId && c.Nombre.ToLower() == nombre.ToLower() && c.CarpetaPadreId == padreId);
             }
         }
 

@@ -46,12 +46,12 @@ public class RepositorioConfiguracionAlmacenamientoAppSettings : IRepositorioCon
         if(!string.IsNullOrEmpty(servicioId))
         {
 
-            proveedor = proveedores.FirstOrDefault(x => x.Activa && x.Servicio.Equals(servicio, StringComparison.InvariantCultureIgnoreCase)
-                && x.ServicioId.Equals(servicioId, StringComparison.InvariantCultureIgnoreCase));
+            proveedor = proveedores.FirstOrDefault(x => x.Activa && x.Servicio.ToLower() == servicio.ToLower()
+                && x.ServicioId.ToLower() == servicioId .ToLower());
         } else
         {
 
-            proveedor = proveedores.FirstOrDefault(x => x.Activa && x.Servicio.Equals(servicio, StringComparison.InvariantCultureIgnoreCase));
+            proveedor = proveedores.FirstOrDefault(x => x.Activa && x.Servicio.ToLower() == servicio.ToLower());
 
         }
         return  Task.FromResult( proveedor);

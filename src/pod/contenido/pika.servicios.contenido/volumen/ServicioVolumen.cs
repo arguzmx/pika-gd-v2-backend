@@ -123,7 +123,7 @@ public class ServicioVolumen : ServicioEntidadGenericaBase<Volumen, VolumenInser
         ResultadoValidacion resultado = new();
         bool encontrado = await DB.Volumenes.AnyAsync(a => a.UOrgId == _contextoUsuario!.UOrgId
                 && a.DominioId == _contextoUsuario.DominioId 
-                && a.Nombre.Equals( data.Nombre, StringComparison.InvariantCultureIgnoreCase));
+                && a.Nombre.ToLower() == data.Nombre.ToLower());
 
         if (encontrado)
         {
