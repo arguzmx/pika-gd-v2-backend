@@ -105,9 +105,8 @@ public class ServicioRol : ServicioEntidadGenericaBase<Rol, CreaRol, ActualizaRo
     {
         _logger.LogDebug("ServicioRol-InsertarAPI-{data}", data); var add = data.Deserialize<CreaRol>(JsonAPIDefaults());
         var temp = await this.Insertar(add, parametros);
-        RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
-        _logger.LogDebug("ServicioRol-InsertarAPI resultado {ok} {code} {error}", respuesta!.Ok, respuesta!.HttpCode, respuesta.Error);
-        return respuesta;
+        _logger.LogDebug("ServicioRol-InsertarAPI resultado {ok} {code} {error}", temp!.Ok, temp!.HttpCode, temp.Error);
+        return temp.ReserializePayloadCamelCase();
     }
 
     public async Task<Respuesta> ActualizarAPI(object id, JsonElement data, StringDictionary? parametros = null)
@@ -131,36 +130,32 @@ public class ServicioRol : ServicioEntidadGenericaBase<Rol, CreaRol, ActualizaRo
     {
         _logger.LogDebug("ServicioRol-UnicaPorIdAPI");
         var temp = await this.UnicaPorId((string)id, parametros);
-        RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
-        _logger.LogDebug("ServicioRol-UnicaPorIdAPI resultado {ok} {code} {error}", respuesta!.Ok, respuesta!.HttpCode, respuesta.Error);
-        return respuesta;
+        _logger.LogDebug("ServicioRol-UnicaPorIdAPI resultado {ok} {code} {error}", temp!.Ok, temp!.HttpCode, temp.Error);
+        return temp.ReserializePayloadCamelCase();
     }
 
     public async Task<RespuestaPayload<object>> UnicaPorIdDespliegueAPI(object id, StringDictionary? parametros = null)
     {
         _logger.LogDebug("ServicioRol-UnicaPorIdDespliegueAPI");
         var temp = await this.UnicaPorIdDespliegue((string)id, parametros);
-        RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
-        _logger.LogDebug("ServicioRol-UnicaPorIdDespliegueAPI resultado {ok} {code} {error}", respuesta!.Ok, respuesta!.HttpCode, respuesta.Error);
-        return respuesta;
+        _logger.LogDebug("ServicioRol-UnicaPorIdDespliegueAPI resultado {ok} {code} {error}", temp!.Ok, temp!.HttpCode, temp.Error);
+        return temp.ReserializePayloadCamelCase();
     }
 
     public async Task<RespuestaPayload<PaginaGenerica<object>>> PaginaAPI(Consulta consulta, StringDictionary? parametros = null)
     {
         _logger.LogDebug("ServicioRol-PaginaAPI-{consulta}", consulta);
         var temp = await this.Pagina(consulta, parametros);
-        RespuestaPayload<PaginaGenerica<object>> respuesta = JsonSerializer.Deserialize<RespuestaPayload<PaginaGenerica<object>>>(JsonSerializer.Serialize(temp));
-        _logger.LogDebug("ServicioRol-PaginaAPI resultado {ok} {code} {error}", respuesta!.Ok, respuesta!.HttpCode, respuesta.Error);
-        return respuesta;
+        _logger.LogDebug("ServicioRol-PaginaAPI resultado {ok} {code} {error}", temp!.Ok, temp!.HttpCode, temp.Error);
+        return temp.ReserializePaginaCamelCase();
     }
 
     public async Task<RespuestaPayload<PaginaGenerica<object>>> PaginaDespliegueAPI(Consulta consulta, StringDictionary? parametros = null)
     {
         _logger.LogDebug("ServicioRol-PaginaDespliegueAPI-{consulta}", consulta);
         var temp = await this.PaginaDespliegue(consulta, parametros);
-        RespuestaPayload<PaginaGenerica<object>> respuesta = JsonSerializer.Deserialize<RespuestaPayload<PaginaGenerica<object>>>(JsonSerializer.Serialize(temp));
-        _logger.LogDebug("ServicioRol-PaginaDespliegueAPI resultado {ok} {code} {error}", respuesta!.Ok, respuesta!.HttpCode, respuesta.Error);
-        return respuesta;
+        _logger.LogDebug("ServicioRol-PaginaDespliegueAPI resultado {ok} {code} {error}", temp!.Ok, temp!.HttpCode, temp.Error);
+        return temp.ReserializePaginaCamelCase();
     }
 
     #region Overrides para la personalización de la entidad LogoAplicacion

@@ -82,7 +82,7 @@ public class ServicioDireccionPostal : ServicioEntidadGenericaBase<DireccionPost
     {
         var add = data.Deserialize<DireccionPostalInsertar>(JsonAPIDefaults());
         var temp = await this.Insertar(add);
-        return temp.ReserializePayloadCamelCase(); ;
+        return temp.ReserializePayloadCamelCase(); 
     }
 
     public async Task<RespuestaPayload<PaginaGenerica<object>>> PaginaAPI(Consulta consulta, StringDictionary? parametros = null)

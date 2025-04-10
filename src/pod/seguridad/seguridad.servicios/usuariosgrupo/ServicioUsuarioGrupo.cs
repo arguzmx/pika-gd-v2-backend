@@ -103,9 +103,8 @@ public class ServicioUsuarioGrupo : ServicioEntidadGenericaBase<UsuarioGrupo, Cr
         _logger.LogDebug("ServicioUsuarioGrupo - InsertarAPI - {data}", data);
         var add = data.Deserialize<CreaUsuarioGrupo>(JsonAPIDefaults());
         var temp = await this.Insertar(add, parametros);
-        RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
-        _logger.LogDebug("ServicioUsuarioGrupo - InsertarAPI - resultado {ok} {code} {error}", respuesta!.Ok, respuesta!.HttpCode, respuesta.Error);
-        return respuesta;
+        _logger.LogDebug("ServicioUsuarioGrupo - InsertarAPI - resultado {ok} {code} {error}", temp!.Ok, temp!.HttpCode, temp.Error);
+        return temp.ReserializePayloadCamelCase();
     }
 
     public async Task<Respuesta> ActualizarAPI(object id, JsonElement data, StringDictionary? parametros = null)
@@ -129,36 +128,32 @@ public class ServicioUsuarioGrupo : ServicioEntidadGenericaBase<UsuarioGrupo, Cr
     {
         _logger.LogDebug("ServicioUsuarioGrupo-UnicaPorIdAPI");
         var temp = await this.UnicaPorId((string)id, parametros);
-        RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
-        _logger.LogDebug("ServicioUsuarioGrupo-UnicarPorIdAPI resultado {ok} {code} {error", respuesta!.Ok, respuesta!.HttpCode, respuesta.Error);
-        return respuesta;
+        _logger.LogDebug("ServicioUsuarioGrupo-UnicarPorIdAPI resultado {ok} {code} {error", temp!.Ok, temp!.HttpCode, temp.Error);
+        return temp.ReserializePayloadCamelCase();
     }
 
     public async Task<RespuestaPayload<object>> UnicaPorIdDespliegueAPI(object id, StringDictionary? parametros = null)
     {
         _logger.LogDebug("ServicioUsuarioGrupo-UnicaPorIdDespliegueAPI");
         var temp = await this.UnicaPorIdDespliegue((string)id, parametros);
-        RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
-        _logger.LogDebug("ServicioUsuarioGrupo-UnicaPorIdDespliegueAPI resultado {ok} {code} {error}", respuesta!.Ok, respuesta!.HttpCode, respuesta.Error);
-        return respuesta;
+        _logger.LogDebug("ServicioUsuarioGrupo-UnicaPorIdDespliegueAPI resultado {ok} {code} {error}", temp!.Ok, temp!.HttpCode, temp.Error);
+        return temp.ReserializePayloadCamelCase();
     }
 
     public async Task<RespuestaPayload<PaginaGenerica<object>>> PaginaAPI(Consulta consulta, StringDictionary? parametros = null)
     {
         _logger.LogDebug("ServicioUsuarioGrupo-PaginaAPI {consulta}", consulta);
         var temp = await this.Pagina(consulta, parametros);
-        RespuestaPayload<PaginaGenerica<object>> respuesta = JsonSerializer.Deserialize<RespuestaPayload<PaginaGenerica<object>>>(JsonSerializer.Serialize(temp));
-        _logger.LogDebug("ServicioUsuarioGrupo-PaginaAPI resultado {ok} {code} {error}", respuesta!.Ok, respuesta!.HttpCode, respuesta.Error);
-        return respuesta;
+        _logger.LogDebug("ServicioUsuarioGrupo-PaginaAPI resultado {ok} {code} {error}", temp!.Ok, temp!.HttpCode, temp.Error);
+        return temp.ReserializePaginaCamelCase();
     }
 
     public async Task<RespuestaPayload<PaginaGenerica<object>>> PaginaDespliegueAPI(Consulta consulta, StringDictionary? parametros = null)
     {
         _logger.LogDebug("ServicioPlantilla-PaginaDespliegueAPI-{consulta}", consulta);
         var temp = await this.PaginaDespliegue(consulta, parametros);
-        RespuestaPayload<PaginaGenerica<object>> respuesta = JsonSerializer.Deserialize<RespuestaPayload<PaginaGenerica<object>>>(JsonSerializer.Serialize(temp));
-        _logger.LogDebug("ServicioPlantilla-PaginaDespliegueAPI resultado {ok} {code} {error}", respuesta!.Ok, respuesta!.HttpCode, respuesta.Error);
-        return respuesta;
+        _logger.LogDebug("ServicioPlantilla-PaginaDespliegueAPI resultado {ok} {code} {error}", temp!.Ok, temp!.HttpCode, temp.Error);
+        return temp.ReserializePaginaCamelCase();
     }
 
     #region Overrides para la personalización de la entidad LogoAplicacion

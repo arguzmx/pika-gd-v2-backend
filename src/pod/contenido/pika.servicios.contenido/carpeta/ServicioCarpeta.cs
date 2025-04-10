@@ -101,41 +101,35 @@ public class ServicioCarpeta : ServicioEntidadGenericaBase<Carpeta, CarpetaInser
         var add = data.Deserialize<CarpetaInsertar>(JsonAPIDefaults());
         add!.RepositorioId = RepositorioId;
         var temp = await this.Insertar(add, parametros);
-        RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
-        return respuesta;
+        return temp.ReserializePayloadCamelCase(); ;
     }
 
     public async Task<RespuestaPayload<PaginaGenerica<object>>> PaginaAPI(Consulta consulta, StringDictionary? parametros = null)
     {
         RepositorioId = Valor(parametros, REPOID);
         var temp = await this.Pagina(consulta, parametros);
-        RespuestaPayload<PaginaGenerica<object>> respuesta = JsonSerializer.Deserialize<RespuestaPayload<PaginaGenerica<object>>>(JsonSerializer.Serialize(temp));
-        return respuesta;
+        return temp.ReserializePaginaCamelCase();
     }
 
     public async Task<RespuestaPayload<PaginaGenerica<object>>> PaginaDespliegueAPI(Consulta consulta, StringDictionary? parametros = null)
     {
         RepositorioId = Valor(parametros, REPOID);
         var temp = await this.PaginaDespliegue(consulta, parametros);
-        RespuestaPayload<PaginaGenerica<object>> respuesta = JsonSerializer.Deserialize<RespuestaPayload<PaginaGenerica<object>>>(JsonSerializer.Serialize(temp));
-        return respuesta;
+        return temp.ReserializePaginaCamelCase();
     }
 
     public async Task<RespuestaPayload<object>> UnicaPorIdAPI(object id, StringDictionary? parametros = null)
     {
         RepositorioId = Valor(parametros, REPOID);
         var temp = await this.UnicaPorId((string)id, parametros);
-        RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
-        return respuesta;
+        return temp.ReserializePayloadCamelCase(); ;
     }
 
     public async Task<RespuestaPayload<object>> UnicaPorIdDespliegueAPI(object id, StringDictionary? parametros = null)
     {
         RepositorioId = Valor(parametros, REPOID);
         var temp = await this.UnicaPorIdDespliegue((string)id, parametros);
-
-        RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
-        return respuesta;
+        return temp.ReserializePayloadCamelCase(); ;
     }
 
     public override async Task<RespuestaPayload<List<NodoArbol<object>>>> Arbol(string? raizId = null, bool parcial = true, bool incluirPayload = false, StringDictionary? parametros = null)

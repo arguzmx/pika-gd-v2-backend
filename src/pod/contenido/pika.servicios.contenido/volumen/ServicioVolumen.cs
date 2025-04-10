@@ -82,38 +82,32 @@ public class ServicioVolumen : ServicioEntidadGenericaBase<Volumen, VolumenInser
     {
         var add = data.Deserialize<VolumenInsertar>(JsonAPIDefaults());
         var temp = await this.Insertar(add, parametros);
-        RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
-        return respuesta;
+        return temp.ReserializePayloadCamelCase();
     }
 
     public async Task<RespuestaPayload<PaginaGenerica<object>>> PaginaAPI(Consulta consulta, StringDictionary? parametros = null)
     {
         var temp = await this.Pagina(consulta, parametros);
-        RespuestaPayload<PaginaGenerica<object>> respuesta = JsonSerializer.Deserialize<RespuestaPayload<PaginaGenerica<object>>>(JsonSerializer.Serialize(temp));
-        return respuesta;
+        return temp.ReserializePaginaCamelCase();
     }
 
     public async Task<RespuestaPayload<PaginaGenerica<object>>> PaginaDespliegueAPI(Consulta consulta, StringDictionary? parametros = null)
     {
         var temp = await this.PaginaDespliegue(consulta, parametros);
-        RespuestaPayload<PaginaGenerica<object>> respuesta = JsonSerializer.Deserialize<RespuestaPayload<PaginaGenerica<object>>>(JsonSerializer.Serialize(temp));
-        return respuesta;
+        return temp.ReserializePaginaCamelCase();
     }
 
 
     public async Task<RespuestaPayload<object>> UnicaPorIdAPI(object id, StringDictionary? parametros = null)
     {
         var temp = await this.UnicaPorId((string)id, parametros);
-        RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
-        return respuesta;
+        return temp.ReserializePayloadCamelCase();
     }
 
     public async Task<RespuestaPayload<object>> UnicaPorIdDespliegueAPI(object id, StringDictionary? parametros = null)
     {
         var temp = await this.UnicaPorIdDespliegue((string)id, parametros);
-
-        RespuestaPayload<object> respuesta = JsonSerializer.Deserialize<RespuestaPayload<object>>(JsonSerializer.Serialize(temp));
-        return respuesta;
+        return temp.ReserializePayloadCamelCase();
     }
 
     #region Overrides para la personalización de la entidad Volumen
