@@ -39,6 +39,9 @@ public class Dominio
     /// <summary>
     /// Determina si el dominio se encuentra activo
     /// </summary>
+    [Nombre]
+    [Formulario(indice: 1, ancho: 100)]
+    [Tabla(indice: 2)]
     public bool Activo { get; set; } = true;
     // [i] [a]
     // R 
