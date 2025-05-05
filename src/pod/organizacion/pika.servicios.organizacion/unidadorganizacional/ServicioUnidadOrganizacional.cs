@@ -81,6 +81,8 @@ IServicioEntidadAPI, IServicioUnidadOrganizacional
     public async Task<RespuestaPayload<object>> InsertarAPI(JsonElement data, StringDictionary? parametros = null)
     {
         var add = data.Deserialize<UnidadOrganizacionalInsertar>(JsonAPIDefaults());
+        add!.DominioId = this._contextoUsuario!.DominioId!;
+
         var temp = await this.Insertar(add, parametros);
         return temp.ReserializePayloadCamelCase();
     }
