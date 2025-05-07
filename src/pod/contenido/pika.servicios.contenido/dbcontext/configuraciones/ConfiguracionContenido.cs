@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using pika.modelo.contenido;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace pika.servicios.contenido.dbcontext.configuraciones;
 public class ConfiguracionContenido : IEntityTypeConfiguration<Contenido>

@@ -252,6 +252,10 @@ public class Program
 
         var app = builder.Build();
 
+#if DEBUG
+        app.DummyData().Wait();
+#endif
+
         app.UseRouting();
         app.UseCors("default");
         app.UseHttpsRedirection();

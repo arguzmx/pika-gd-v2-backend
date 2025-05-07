@@ -209,7 +209,7 @@ public class ServicioDominio : ServicioEntidadGenericaBase<Dominio, DominioInser
     {
         Dominio archivo = new Dominio()
         {
-            Id = Guid.NewGuid().ToString(),
+            Id =  Guid.NewGuid().ToString(),
             Nombre = data.Nombre,
             Activo = data.Activo,
             UsuarioId = _contextoUsuario.UsuarioId

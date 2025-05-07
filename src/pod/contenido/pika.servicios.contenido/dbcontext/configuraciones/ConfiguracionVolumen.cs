@@ -25,7 +25,6 @@ public class ConfiguracionVolumen : IEntityTypeConfiguration<Volumen>
         builder.Property(e => e.Tamano).IsRequired();
         builder.Property(e => e.ConfiguracionValida).IsRequired();
 
-        //builder.HasOne(x => x.TipoGestorES).WithMany(y => y.Volumenes).HasForeignKey(z => z.TipoGestorESId).OnDelete(DeleteBehavior.Cascade);
-
+        builder.HasOne(x => x.TipoGestorES).WithMany(y => y.Volumenes).HasForeignKey(z => z.TipoGestorESId).OnDelete(DeleteBehavior.Cascade);
     }
 }

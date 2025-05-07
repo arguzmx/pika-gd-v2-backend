@@ -3,7 +3,6 @@ using apigenerica.primitivas.aplicacion;
 using apigenerica.primitivas.seguridad;
 using comunes.interservicio.primitivas;
 using comunes.interservicio.primitivas.seguridad;
-using CouchDB.Driver.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using pika.api.contenido.seguridad;
 using pika.servicios.contenido.dbcontext;
@@ -96,6 +95,10 @@ public class Program
         var app = builder.Build();
         UpdateDatabase(app);
 
+#if DEBUG
+        app.DummyData().Wait();
+#endif
+        app.CatalogoGenericos().Wait();
         app.UseEntidadAPI();
 
         if (app.Environment.IsDevelopment())

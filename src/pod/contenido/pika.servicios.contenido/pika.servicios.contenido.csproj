@@ -8,8 +8,6 @@
 
 
 	<ItemGroup>
-		<PackageReference Include="CouchDB.NET" Version="3.4.0" />
-		<PackageReference Include="CouchDB.NET.DependencyInjection" Version="3.4.0" />
 		<PackageReference Include="extensibilidad.metadatos" Version="1.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
@@ -31,6 +29,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="data\migrations\" />
+	  <Folder Include="data\migrations\" />
 	</ItemGroup>
 </Project>

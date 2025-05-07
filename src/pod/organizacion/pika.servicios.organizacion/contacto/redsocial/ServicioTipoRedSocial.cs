@@ -1,7 +1,6 @@
 ﻿using apigenerica.model.modelos;
 using apigenerica.model.reflectores;
 using apigenerica.model.servicios;
-using comunes.primitivas;
 using Microsoft.Extensions.Logging;
 using pika.modelo.organizacion.Contacto;
 using pika.servicios.organizacion.dbcontext;

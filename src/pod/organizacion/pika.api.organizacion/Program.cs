@@ -4,15 +4,11 @@ using apigenerica.primitivas.aplicacion;
 using apigenerica.primitivas.seguridad;
 using comunes.interservicio.primitivas;
 using comunes.interservicio.primitivas.seguridad;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using pika.api.organizacion.seguridad;
 using pika.servicios.organizacion.dbcontext;
 using Quartz;
 using System.Reflection;
-using System.Text.Encodings.Web;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace pika.api.organizacion;
 
@@ -124,6 +120,10 @@ public class Program
     });
 
         var app = builder.Build();
+
+#if DEBUG
+        app.DummyData().Wait();
+#endif
 
         UpdateDatabase(app);
 

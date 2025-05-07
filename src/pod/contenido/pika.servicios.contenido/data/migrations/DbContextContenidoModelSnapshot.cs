@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using pika.servicios.contenido.dbcontext;
 
@@ -18,6 +19,99 @@ namespace pika.servicios.contenido.data.migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("apigenerica.model.modelos.ElementoCatalogo", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("CatalogoId")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<int>("Discriminator")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DominioId")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("Idioma")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("Texto")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.Property<string>("UnidadOrganizacionalId")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CatalogoId");
+
+                    b.ToTable("cont$catalogos", (string)null);
+
+                    b.HasDiscriminator().HasValue(0);
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("apigenerica.model.modelos.I18NCatalogo", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("DominioId")
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("UnidadOrganizacionalId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Idioma")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.Property<string>("CatalogoId")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<int>("Discriminator")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ElementoCatalogoId")
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("Texto")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("varchar(512)");
+
+                    b.HasKey("Id", "DominioId", "UnidadOrganizacionalId", "Idioma");
+
+                    b.HasIndex("ElementoCatalogoId");
+
+                    b.HasIndex("CatalogoId", "Idioma");
+
+                    b.ToTable("cont$i18ncatalogos", (string)null);
+
+                    b.HasDiscriminator().HasValue(0);
+
+                    b.UseTphMappingStrategy();
+                });
 
             modelBuilder.Entity("pika.modelo.contenido.Carpeta", b =>
                 {
@@ -213,7 +307,30 @@ namespace pika.servicios.contenido.data.migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("TipoGestorESId");
+
                     b.ToTable("cont$volumen", (string)null);
+                });
+
+            modelBuilder.Entity("pika.modelo.contenido.TipoGestorES", b =>
+                {
+                    b.HasBaseType("apigenerica.model.modelos.ElementoCatalogo");
+
+                    b.HasDiscriminator().HasValue(1);
+                });
+
+            modelBuilder.Entity("pika.modelo.contenido.TraduccionesTipoGestorES", b =>
+                {
+                    b.HasBaseType("apigenerica.model.modelos.I18NCatalogo");
+
+                    b.HasDiscriminator().HasValue(1);
+                });
+
+            modelBuilder.Entity("apigenerica.model.modelos.I18NCatalogo", b =>
+                {
+                    b.HasOne("apigenerica.model.modelos.ElementoCatalogo", null)
+                        .WithMany("Traducciones")
+                        .HasForeignKey("ElementoCatalogoId");
                 });
 
             modelBuilder.Entity("pika.modelo.contenido.Carpeta", b =>
@@ -265,6 +382,22 @@ namespace pika.servicios.contenido.data.migrations
                     b.Navigation("Volumen");
                 });
 
+            modelBuilder.Entity("pika.modelo.contenido.Volumen", b =>
+                {
+                    b.HasOne("pika.modelo.contenido.TipoGestorES", "TipoGestorES")
+                        .WithMany("Volumenes")
+                        .HasForeignKey("TipoGestorESId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TipoGestorES");
+                });
+
+            modelBuilder.Entity("apigenerica.model.modelos.ElementoCatalogo", b =>
+                {
+                    b.Navigation("Traducciones");
+                });
+
             modelBuilder.Entity("pika.modelo.contenido.Carpeta", b =>
                 {
                     b.Navigation("Contenido");
@@ -282,6 +415,11 @@ namespace pika.servicios.contenido.data.migrations
                     b.Navigation("Contenido");
 
                     b.Navigation("Repositorios");
+                });
+
+            modelBuilder.Entity("pika.modelo.contenido.TipoGestorES", b =>
+                {
+                    b.Navigation("Volumenes");
                 });
 #pragma warning restore 612, 618
         }
